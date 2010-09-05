@@ -1,0 +1,4 @@
+This is an IRC bot, which is designed to execute Perl 6 commands from IRC, and
+echo the output on IRC again.
+
+Might also work for other languages :-)
