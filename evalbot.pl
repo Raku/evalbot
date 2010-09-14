@@ -71,13 +71,13 @@ package Evalbot;
             vivpsq => {
                 chdir       => "$home/std/snap",
                 cmd_line    => $^X . ' viv --psq %program >>%out 2>&1',
-                revision    => sub { get_revision_from_file('/home/p6eval/pugs/src/perl6/snap/revision')},
+                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
             },
             vpr => {
                 chdir       => "$home/std/snap",
                 cmd_line    => $^X . ' viv --psq %program >>%out.f 2>&1 ; cd /home/p6eval/perlesque/trunk/Sprixel/bin/Release ; ' .
                     $^X . 'cat %i | mono -O=-all,cfold perlesque.exe %out.f >> %out 2>&1',
-                revision    => sub { get_revision_from_file('/home/p6eval/pugs/src/perl6/snap/revision')},
+                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
             },
             mildew  => {
                 chdir       => $home,
@@ -200,7 +200,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             highlight  => {
                 chdir       => "$home/std/snap/std_hilite",
                 cmd_line    => $^X . ' STD_syntax_highlight %program >>%out 2>&1',
-                revision    => \&get_revision,
+                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
             },
     );
 
@@ -276,18 +276,13 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             if (reftype($e) eq 'HASH' && $e->{revision}){
                 $revision = ' ' . $e->{revision}->();
             }
-            return sprintf "%s%s: %s", $eval_name, $revision, $result;           
+            return sprintf "%s%s: %s", $eval_name, $revision, $result;
         }
         return;
     }
 
     sub get_revision {
-        my $info = qx/svn info/;
-        if ($info =~ m/^Revision:\s+(\d+)$/smx){
-            return $1;
-        } else {
-            return "_unknown";
-        }
+        qx/git log --pretty=%h -1/;
     }
 
     sub get_revision_from_file {
