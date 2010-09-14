@@ -51,59 +51,61 @@ package Evalbot;
     my $prefix  = '';
     my $postfix = ':';
 
+    my $home = glob '~';
+
     our %impls = (
             'partcl' => {
-                chdir       => '../../../partcl-nqp',
+                chdir       => "$home/partcl-nqp",
                 cmd_line    => 'cat %i | ./partcl %program >> %out 2>&1',
                 filter      => \&filter_pct,
                 revision    => sub { get_revision_from_file('/home/p6eval/partcl-nqp/.revision', 6)},
             },
             perlesque => {
-                chdir       => '../../../perlesque/trunk/Sprixel/bin/Release',
+                chdir       => "$home/perlesque/trunk/Sprixel/bin/Release",
                 cmd_line    => 'cat %i | mono -O=-all,cfold perlesque.exe %program >> %out 2>&1',
             },
             perlesquel => {
-                chdir       => '../../../perlesque/trunk/Sprixel/bin/Release',
+                chdir       => "$home/perlesque/trunk/Sprixel/bin/Release",
                 cmd_line    => '/usr/bin/time -p mono asmbly_1.exe >> %out 2>&1',
             },
             vivpsq => {
-                chdir       =>'../../src/perl6/snap',
+                chdir       => "$home/std/snap",
                 cmd_line    => $^X . ' viv --psq %program >>%out 2>&1',
                 revision    => sub { get_revision_from_file('/home/p6eval/pugs/src/perl6/snap/revision')},
             },
             vpr => {
-                chdir       =>'../../src/perl6/snap',
+                chdir       => "$home/std/snap",
                 cmd_line    => $^X . ' viv --psq %program >>%out.f 2>&1 ; cd /home/p6eval/perlesque/trunk/Sprixel/bin/Release ; ' .
                     $^X . 'cat %i | mono -O=-all,cfold perlesque.exe %out.f >> %out 2>&1',
                 revision    => sub { get_revision_from_file('/home/p6eval/pugs/src/perl6/snap/revision')},
             },
             mildew  => {
-                chdir       => '../../v6/re-mildew',
+                chdir       => $home,
                 cmd_line    => 'cat %i | /home/mildew/perl5/perlbrew/bin/perl /home/mildew/perl5/perlbrew/perls/current/bin/mildew %program >> %out 2>&1',
             },
-            elf => {
-                chdir       => '../elf',
-                cmd_line    => 'cat %i| ./elf_h %program >> %out 2>&1',
-                revision    => \&get_revision,
-            },
+#            elf => {
+#                chdir       => '../elf',
+#                cmd_line    => 'cat %i| ./elf_h %program >> %out 2>&1',
+#                revision    => \&get_revision,
+#            },
             niecza => {
-                chdir       => '../../../niecza',
+                chdir       => "$home/niecza",
                 cmd_line    => 'cat %i| /opt/perl-5.12.1/bin/perl niecza_eval --safe %program >> %out 2>&1',
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
-            perlito => {
-                chdir       => '../../../Perlito',
-                cmd_line    => 'cat %i| perl mp6.pl %program >> %out 2>&1',
-                program_munger => sub {
-                    my $inp = shift;
-                    if ($inp =~ /^\s*class/) {
-                        return $inp;
-                    }
-                    return 'class Main { ' . $inp . ' }';
-                },
-            },
+#            perlito => {
+#                chdir       => '../../../Perlito',
+#                cmd_line    => 'cat %i| perl mp6.pl %program >> %out 2>&1',
+#                program_munger => sub {
+#                    my $inp = shift;
+#                    if ($inp =~ /^\s*class/) {
+#                        return $inp;
+#                    }
+#                    return 'class Main { ' . $inp . ' }';
+#                },
+#            },
             rakudo => {
-                chdir       => '../../../rakudo/',
+                chdir       => "$home/rakudo/",
                 cmd_line    => 'cat %i | PERL6LIB=lib ../p/bin/perl6 %program >> %out 2>&1',
                 revision    => sub { get_revision_from_file('~/p/rakudo-revision')},
                 filter      => \&filter_pct,
@@ -133,7 +135,7 @@ Q:PIR {
 >,
             },
             star => {
-                chdir       => '../../../rakudo-star-2010.07/',
+                chdir       => "$home/rakudo-star-2010.07/",
                 cmd_line    => 'cat %i | ./perl6 %program >> %out 2>&1',
                 revision    => sub { '2010.07' },
                 filter      => \&filter_pct,
@@ -163,7 +165,7 @@ Q:PIR {
 >,
             },
             alpha => {
-                chdir       => '../../../rakudo-alpha/',
+                chdir       => "$home/rakudo-alpha/",
                 cmd_line    => 'cat %i | PERL6LIB=lib ../rakudo-alpha/perl6 %program >> %out 2>&1',
                 revision    => sub { get_revision_from_file('~/rakudo-alpha/revision')},
                 filter      => \&filter_pct,
@@ -179,7 +181,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
     };',
             },
             nqp   => {
-                chdir       => '../../../nqp-rx',
+                chdir       => "$home/nqp-rx",
                 cmd_line    => 'cat %i | ./nqp %program >> %out 2>&1',
                 filter      => \&filter_pct,
             },
@@ -187,21 +189,16 @@ set_hll_global [\'IO\'], \'Socket\', $P0
                 cmd_line    => 'cat %i | PUGS_SAFEMODE=true ~/.cabal/bin/pugs %program >> %out 2>&1',
             },
             std  => {
-                chdir       => '../../src/perl6/snap',
+                chdir       => "$home/std/snap",
                 cmd_line    => '/opt/perl-5.12.1/bin/perl tryfile %program >>%out 2>&1',
-                revision    => sub { get_revision_from_file('/home/p6eval/pugs/src/perl6/snap/revision')},
-            },
-            sprixel  => {
-                chdir       => '../../src/perl6/snap',
-                cmd_line    => $^X . ' sprixel.pl %program -t >>%out 2>&1',
-                revision    => sub { get_revision_from_file('/home/p6eval/pugs/src/perl6/snap/revision')},
+                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
             },
             yapsi   => {
-                chdir       => '../../../bin/yapsi',
+                chdir       => "$home/yapsi/bin",
                 cmd_line    => 'PERL6LIB=lib /home/p6eval/rakudo-alpha/parrot_install/bin/alpha yapsi %program >>%out 2>&1',
             },
             highlight  => {
-                chdir       => '../../src/perl6/std_hilite',
+                chdir       => "$home/std/snap/std_hilite",
                 cmd_line    => $^X . ' STD_syntax_highlight %program >>%out 2>&1',
                 revision    => \&get_revision,
             },
