@@ -12,6 +12,6 @@ my $what = shift(@ARGV) or die "Usage: $0 <project>\n";
 my $script_dir = "$FindBin::Bin/build-scripts/";
 my $script = first { -e $_ } "$script_dir/$what.pl", "$script_dir/$what.sh";
 
-die "Found no rebuild script for $what\n" unless $script_dir;
+die "Found no rebuild script for $what\n" unless $script;
 
 exec "$script 2>&1 >~/log/$what.log";
