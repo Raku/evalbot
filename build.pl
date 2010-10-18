@@ -10,7 +10,7 @@ use FindBin;
 my $what = shift(@ARGV) or die "Usage: $0 <project>\n";
 
 my $script_dir = "$FindBin::Bin/build-scripts/";
-my $script = first { -e $_ } "$script_dir/$what.pl", "$script_dir/$what.sh";
+my $script = first { -e $_ } "$script_dir/rebuild-$what.pl", "$script_dir/rebuild-$what.sh";
 
 die "Found no rebuild script for $what\n" unless $script;
 
