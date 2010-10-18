@@ -151,7 +151,7 @@ sub _auto_execute {
         close $prog_fh;
 
         # TODO: avoid hardcoded path
-        my $stdin = glob '~/pugs/misc/evalbot/stdin';
+        my $stdin = glob '~/evalbot/stdin';
 
         $cmd =~ s/\%out\b/$out_filename/g;
         $cmd =~ s/\%program\b/$program_file_name/g;
