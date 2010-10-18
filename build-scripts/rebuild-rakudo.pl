@@ -22,7 +22,7 @@ chdir "${home}rakudo";
 system('git', 'pull');
 
 my $revision_file = "$home$other/rakudo-revision";
-for ($revision_file) {
+eval {
     open my $fh, '<', $revision_file or break;
     my $r = <$fh>;
     close $fh;
@@ -34,7 +34,7 @@ for ($revision_file) {
         say "Don't need to rebuild, we are on the newest revision anyway";
         exit;
     }
-}
+};
 
 my $revision = `cat build/PARROT_REVISION`;
 if ($revision =~ m/^(\d+)/) {
