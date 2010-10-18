@@ -2,8 +2,10 @@ use strict;
 use warnings;
 use File::Path qw(rmtree);
 use 5.010;
-#use autodie;
+use autodie;
 use Data::Dumper;
+
+chdir glob '~';
 
 my $home = glob('~') . '/';
 my @dirs = qw(p1 p2);

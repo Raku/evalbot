@@ -1,4 +1,5 @@
 #!/bin/sh
+cd
 set -e
 echo -e "\n\nNew nqp-rx build"
 date

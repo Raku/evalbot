@@ -1,4 +1,5 @@
 #!/bin/sh
+cd
 PATH=/usr/local/bin:/usr/bin:/bin:/usr/games
 echo
 echo "updating partcl-nqp"
