@@ -190,7 +190,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             },
             std  => {
                 chdir       => "$home/std/snap",
-                cmd_line    => '/opt/perl-5.12.1/bin/perl tryfile %program >>%out 2>&1',
+                cmd_line    => 'perl tryfile %program >>%out 2>&1',
                 revision    => sub { get_revision_from_file("$home/std/snap/revision")},
             },
             yapsi   => {
