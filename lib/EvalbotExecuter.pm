@@ -72,6 +72,7 @@ use Carp qw(confess);
 use File::Temp qw(tempfile);
 use Scalar::Util qw(reftype);
 use Encode qw(encode);
+use charnames qw(:full);
 
 my $max_output_len = 290;
 
@@ -84,7 +85,9 @@ sub run {
     $response = "OUTPUT«$response»";
     }
     my $newline = '␤';
+    my $null    = "\N{SYMBOL FOR NULL}";
     $response =~ s/\n/$newline/g;
+    $response =~ s/\x00/$null/g;
     if (length $response > $max_output_len){
         $response = substr $response, 0, $max_output_len - 1;
         $response .= '…';
