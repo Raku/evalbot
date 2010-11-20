@@ -93,6 +93,11 @@ package Evalbot;
                 cmd_line    => 'cat %i| perl niecza_eval --safe %program >> %out 2>&1',
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
+            nqpnet => {
+                chdir       => "$home/6model/dotnet/compiler",
+                cmd_line    => 'cat %i| ./try2.sh %program >> %out 2>&1',
+                #revision    => sub { get_revision_from_file('~/6model/VERSION'
+            },
 #            perlito => {
 #                chdir       => '../../../Perlito',
 #                cmd_line    => 'cat %i| perl mp6.pl %program >> %out 2>&1',
