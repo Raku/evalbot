@@ -37,6 +37,7 @@ eval {
 };
 
 my $revision = `cat build/PARROT_REVISION`;
+chomp $revision;
 say "Requiring revision $revision";
 
 my $parrot_config = "$home$other/bin/parrot_config";
