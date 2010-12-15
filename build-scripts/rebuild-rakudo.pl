@@ -37,18 +37,13 @@ eval {
 };
 
 my $revision = `cat build/PARROT_REVISION`;
-if ($revision =~ m/^(\d+)/) {
-    $revision = $1;
-} else {
-    die "Can't handle revision '$revision'";
-}
 say "Requiring revision $revision";
 
 my $parrot_config = "$home$other/bin/parrot_config";
-my $available = `$parrot_config revision`;
+my $available = `$parrot_config git_describe`;
 chomp $available;
 say "Revision $available available";
-if ($available <= $revision) {
+if ($available ne $revision) {
     chdir 'parrot';
     system('make', 'distclean');
     system('svn', 'up', "-r$revision")                  and die $?;
