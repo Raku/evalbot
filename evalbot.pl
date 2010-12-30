@@ -70,12 +70,12 @@ package Evalbot;
             },
             vivpsq => {
                 chdir       => "$home/std/snap",
-                cmd_line    => $^X . ' viv --psq %program >>%out 2>&1',
+                cmd_line    => $^X . ' ./viv --psq %program >>%out 2>&1',
                 revision    => sub { get_revision_from_file("$home/std/snap/revision")},
             },
             vpr => {
                 chdir       => "$home/std/snap",
-                cmd_line    => $^X . ' viv --psq %program >>%out.f 2>&1 ; cd /home/p6eval/perlesque/trunk/Sprixel/bin/Release ; ' .
+                cmd_line    => $^X . ' ./viv --psq %program >>%out.f 2>&1 ; cd /home/p6eval/perlesque/trunk/Sprixel/bin/Release ; ' .
                     $^X . 'cat %i | mono -O=-all,cfold perlesque.exe %out.f >> %out 2>&1',
                 revision    => sub { get_revision_from_file("$home/std/snap/revision")},
             },
