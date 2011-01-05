@@ -61,24 +61,24 @@ package Evalbot;
                 revision    => sub { get_revision_from_file('/home/p6eval/partcl-nqp/.revision', 6)},
             },
             perlesque => {
-                chdir       => "$home/perlesque/trunk/Sprixel/bin/Release",
-                cmd_line    => 'cat %i | mono -O=-all,cfold perlesque.exe %program >> %out 2>&1',
+                chdir       => "$home/sprixel/sprixel/bin/Release",
+                cmd_line    => 'cat %i | /home/p6eval/sprixel/clr/bin/mono sprixel.exe %program >> %out 2>&1',
             },
-            perlesquel => {
-                chdir       => "$home/perlesque/trunk/Sprixel/bin/Release",
-                cmd_line    => '/usr/bin/time -p mono asmbly_1.exe >> %out 2>&1',
-            },
-            vivpsq => {
-                chdir       => "$home/std/snap",
-                cmd_line    => $^X . ' ./viv --psq %program >>%out 2>&1',
-                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
-            },
-            vpr => {
-                chdir       => "$home/std/snap",
-                cmd_line    => $^X . ' ./viv --psq %program >>%out.f 2>&1 ; cd /home/p6eval/perlesque/trunk/Sprixel/bin/Release ; ' .
-                    $^X . 'cat %i | mono -O=-all,cfold perlesque.exe %out.f >> %out 2>&1',
-                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
-            },
+#            perlesquel => {
+#                chdir       => "$home/perlesque/trunk/Sprixel/bin/Release",
+#                cmd_line    => '/usr/bin/time -p mono asmbly_1.exe >> %out 2>&1',
+#            },
+#            vivpsq => {
+#                chdir       => "$home/std/snap",
+#                cmd_line    => $^X . ' ./viv --psq %program >>%out 2>&1',
+#                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
+#            },
+#            vpr => {
+#                chdir       => "$home/std/snap",
+#                cmd_line    => $^X . ' ./viv --psq %program >>%out.f 2>&1 ; cd /home/p6eval/perlesque/trunk/Sprixel/bin/Release ; ' .
+#                    $^X . 'cat %i | mono -O=-all,cfold perlesque.exe %out.f >> %out 2>&1',
+#                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
+#            },
             mildew  => {
                 chdir       => $home,
                 cmd_line    => 'cat %i | /home/mildew/perl5/perlbrew/bin/perl /home/mildew/perl5/perlbrew/perls/current/bin/mildew %program >> %out 2>&1',
