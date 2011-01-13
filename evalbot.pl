@@ -61,7 +61,7 @@ package Evalbot;
                 revision    => sub { get_revision_from_file('/home/p6eval/partcl-nqp/.revision', 6)},
             },
             perlesque => {
-                chdir       => "$home/sprixel/sprixel/bin/Release",
+                chdir       => "$home/sprixel/sprixel/sprixel/bin/Release",
                 cmd_line    => 'cat %i | /home/p6eval/sprixel/clr/bin/mono sprixel.exe %program >> %out 2>&1',
             },
 #            perlesquel => {
