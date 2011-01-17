@@ -90,7 +90,7 @@ package Evalbot;
 #            },
             niecza => {
                 chdir       => "$home/niecza",
-                cmd_line    => 'cat %i| ./run/Niecza.exe --safe %program >> %out 2>&1',
+                cmd_line    => 'cat %i| mono run/Niecza.exe --safe %program >> %out 2>&1',
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
             nqpnet => {
