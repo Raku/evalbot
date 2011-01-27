@@ -78,6 +78,11 @@ my $max_output_len = 290;
 
 sub run {
     my ($program, $executer) = @_;
+    if ($program =~ /^https:\/\/gist\.github\.com\/\d+$/) {
+      my $page = `curl -s $program`;
+      $page =~ /href="(\/raw[^"]+)"/;
+      $program = `curl -s https://gist.github.com$1`;
+    }
     my $response = _fork_and_eval($program, $executer);
     if (!length $response){
         $response = ' ( no output )';
