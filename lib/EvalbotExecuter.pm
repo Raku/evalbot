@@ -81,7 +81,7 @@ sub run {
     if ($program =~ /^https:\/\/gist\.github\.com\/\d+$/) {
       my $page = `curl -s $program`;
       $page =~ /href="(\/raw[^"]+)"/;
-      $program = `curl -s https://gist.github.com$1`;
+      if ($1) { $program = `curl -s https://gist.github.com$1` } else { return 'gist not found' };
     }
     my $response = _fork_and_eval($program, $executer);
     if (!length $response){
