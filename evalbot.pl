@@ -186,6 +186,11 @@ set_hll_global [\'IO\'], \'Socket\', $P0
     };',
             },
             nqp   => {
+                chdir       => "$home/nqp",
+                cmd_line    => 'cat %i | ./nqp %program >> %out 2>&1',
+                filter      => \&filter_pct,
+            },
+            nqprx => {
                 chdir       => "$home/nqp-rx",
                 cmd_line    => 'cat %i | ./nqp %program >> %out 2>&1',
                 filter      => \&filter_pct,
