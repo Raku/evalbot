@@ -1,6 +1,8 @@
 #!/bin/sh
 cd
-cd std
+set -e
+echo -e "\n\nNew std build"
+date
+cd std-rx
 git pull
-# export PATH=/home/p6eval/perl5/perlbrew/perls/perl-5.12.1/bin:$PATH
-make snap
+make snap || ( git clean -xdf; make snap )
