@@ -62,7 +62,7 @@ package Evalbot;
             },
             perlesque => {
                 chdir       => "$home/sprixel/sprixel/sprixel/bin/Release",
-                cmd_line    => 'cat %i | /home/p6eval/sprixel/clr/bin/mono sprixel.exe %program >> %out 2>&1',
+                cmd_line    => 'cat %i | /home/p6eval/sprixel/clr/bin/mono --gc=sgen sprixel.exe %program >> %out 2>&1',
             },
 #            perlesquel => {
 #                chdir       => "$home/perlesque/trunk/Sprixel/bin/Release",
