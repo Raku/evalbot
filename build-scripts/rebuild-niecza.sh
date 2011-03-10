@@ -5,3 +5,4 @@ echo "updating niecza"
 cd ~/niecza/
 git pull
 make
+mono run/Niecza.exe -C Test JSYNC Threads
