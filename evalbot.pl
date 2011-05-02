@@ -269,7 +269,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
         } elsif ( $message =~ m/\Aevalbot\s*control\s+(\w+)/) {
             my $command = $1;
             if ($command eq 'restart'){
-                warn "Restarting $0 (by user request\n";
+                warn "Restarting $0 (by user request)\n";
                 # we do hope that evalbot is started in an endless loop ;-)
                 exit;
             } elsif ($command eq 'version'){
