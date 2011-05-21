@@ -275,18 +275,6 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             } elsif ($command eq 'version'){
                 return "This is evalbot revision $evalbot_version";
             }
-
-        } elsif ($message =~ m/\A(.+)\z/s && $address eq 'msg') {
-            #a request like /msg evalbot perl6 code
-            my ($eval_name, $str) = ('highlight', $1);
-            my $e = $impls{$eval_name};
-            warn "Highlight: $str\n";
-            my $result = EvalbotExecuter::run($str, $e, $eval_name);
-            my $revision = '';
-            if (reftype($e) eq 'HASH' && $e->{revision}){
-                $revision = ' ' . $e->{revision}->();
-            }
-            return sprintf "%s%s: %s", $eval_name, $revision, $result;
         }
         return;
     }
