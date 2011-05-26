@@ -49,7 +49,7 @@ package Evalbot;
     use Carp qw(confess);
     use Scalar::Util qw(reftype);
     my $prefix  = '';
-    my $postfix = ':';
+    my $postfix = qr/:\s/;
 
     my $home = glob '~';
 
