@@ -139,6 +139,11 @@ Q:PIR {
 # EVALBOT ARTIFACT
 >,
             },
+            nom => {
+                chdir       => "$home/nom/",
+                cmd_line    => 'cat %i | PERL6LIB=lib ./perl6 %program >> %out 2>&1',
+                filter      => \&filter_pct,
+            },
             star => {
                 chdir       => "$home/rakudo-star-2011.04/",
                 cmd_line    => 'cat %i | ./install/bin/perl6 %program >> %out 2>&1',
