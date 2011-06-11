@@ -255,7 +255,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             return "Program empty" unless length $str;
             warn "$info->{channel} <$info->{who}> Perl6: $str\n";
             my %results;
-            for my $eval_name qw(pugs rakudo niecza){
+            for my $eval_name (qw(pugs rakudo niecza)) {
                 my $e = $impls{$eval_name};
                 my $tmp_res = EvalbotExecuter::run($str, $e, $eval_name);
                 my $revision = '';
