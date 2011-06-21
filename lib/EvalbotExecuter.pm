@@ -73,6 +73,7 @@ use File::Temp qw(tempfile);
 use Scalar::Util qw(reftype);
 use Encode qw(encode);
 use charnames qw(:full);
+use POSIX ();
 
 my $max_output_len = 280;
 
@@ -93,7 +94,7 @@ sub run {
     my $null    = "\N{SYMBOL FOR NULL}";
     $response =~ s/\n/$newline/g;
     $response =~ s/\x00/$null/g;
-    if (length $response > $max_output_len){
+    if (bytes::length $response > $max_output_len){
         $response = substr $response, 0, $max_output_len - 1;
         $response .= '…';
     }
@@ -107,19 +108,26 @@ sub _fork_and_eval {
     my ($fh, $filename) = tempfile();
 
     my $fork_val = fork;
+    my $timed_out = 0;
     if (!defined $fork_val){
         confess "Can't fork(): $!";
     } elsif ($fork_val == 0) {
-        local $SIG{ALRM} = sub {print $fh "(timeout)"; close $fh; exit 14 };
+	POSIX::setpgid($$,$$);
         _set_resource_limits();
-        alarm 12;
         _auto_execute($executer, $program, $fh, $filename, "/home/p6eval/evalbot/build-scripts/lock.$ename");
-        alarm 0;
         close $fh;
         exit;
     } else {
 # server
+	alarm 12;
+        local $SIG{ALRM} = sub {
+            $timed_out = 1;
+            kill 15, -$fork_val;
+            alarm 0;
+        };
+
         wait;
+        alarm 0;
     }
 
     # gather result
@@ -127,7 +135,11 @@ sub _fork_and_eval {
     open ($fh, '<:encoding(UTF-8)', $filename) or confess "Can't open temp file <$filename>: $!";
     my $result = do { local $/; <$fh> };
     unlink $filename or warn "couldn't delete '$filename': $!";
-   return 'TIMED_OUT' if $? == 14;
+    if ($timed_out) {
+	$result = "(timeout)" . $result;
+    } elsif ($? & 127) {
+        $result = "(signal $?)" . $result;
+    }
     if (reftype($executer) eq 'HASH' && $executer->{filter}){
         return $executer->{filter}->($result);
     }
@@ -138,12 +150,16 @@ sub _auto_execute {
     my ($executer, $program, $fh, $out_filename, $lock_name) = @_;
     local $^F = 1000;
     open my $lock, ">", $lock_name;
+    open STDOUT, ">&", $fh;
+    open STDERR, ">&", $fh;
+    # TODO: avoid hardcoded path
+    open STDIN, "<", glob '~/evalbot/stdin';
     unless (flock $lock, 6) {
-        print $fh "Rebuild in progress\n";
+        print "Rebuild in progress\n";
         exit 1;
     }
     if (reftype($executer) eq "CODE"){
-        $executer->($program, $fh, $out_filename);
+        $executer->($program);
     } else {
         if ($executer->{chdir}){
             chdir $executer->{chdir}
@@ -164,12 +180,7 @@ sub _auto_execute {
         print $prog_fh $program;
         close $prog_fh;
 
-        # TODO: avoid hardcoded path
-        my $stdin = glob '~/evalbot/stdin';
-
-        $cmd =~ s/\%out\b/$out_filename/g;
         $cmd =~ s/\%program\b/$program_file_name/g;
-        $cmd =~ s/\%i\b/$stdin/g;
         system($cmd);
     }
 }
