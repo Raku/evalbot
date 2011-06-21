@@ -14,4 +14,4 @@ my $script = first { -e $_ } "$script_dir/rebuild-$what.pl", "$script_dir/rebuil
 
 die "Found no rebuild script for $what\n" unless $script;
 
-exec "$script >~/log/$what.log 2>&1";
+exec "flock -w 60 $script_dir/lock.$what $script >~/log/$what.log 2>&1";

@@ -280,7 +280,10 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             } elsif ($command eq 'version'){
                 return "This is evalbot revision $evalbot_version";
             }
-        }
+	} elsif ($message =~ m/\Aevalbot\s*rebuild\s+(\w+)/) {
+	    system "./build.pl $1 &";
+	    return "OK (started asyncronously)";
+	}
         return;
     }
 

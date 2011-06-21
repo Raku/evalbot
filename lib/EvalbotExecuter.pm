@@ -77,17 +77,17 @@ use charnames qw(:full);
 my $max_output_len = 290;
 
 sub run {
-    my ($program, $executer) = @_;
+    my ($program, $executer, $ename) = @_;
     if ($program =~ /^https:\/\/gist\.github\.com\/\d+$/) {
       my $page = `curl -s $program`;
       $page =~ /href="\/raw([^"]+)"/;
       if ($1) { $program = `curl -s https://raw.github.com/gist$1` } else { return 'gist not found' };
     }
-    my $response = _fork_and_eval($program, $executer);
+    my $response = _fork_and_eval($program, $executer, $ename);
     if (!length $response){
         $response = ' ( no output )';
-    } elsif ($response !~ /^TIMED_OUT$/) {
-    $response = "OUTPUT«$response»";
+    } else {
+        $response = "OUTPUT«$response»";
     }
     my $newline = '␤';
     my $null    = "\N{SYMBOL FOR NULL}";
@@ -101,7 +101,7 @@ sub run {
 }
 
 sub _fork_and_eval {
-    my ($program, $executer) = @_;
+    my ($program, $executer, $ename) = @_;
 
 # the forked process should write its output to this tempfile:
     my ($fh, $filename) = tempfile();
@@ -113,7 +113,7 @@ sub _fork_and_eval {
         local $SIG{ALRM} = sub {print $fh "(timeout)"; close $fh; exit 14 };
         _set_resource_limits();
         alarm 12;
-        _auto_execute($executer, $program, $fh, $filename);
+        _auto_execute($executer, $program, $fh, $filename, "/home/p6eval/evalbot/build-scripts/lock.$ename");
         alarm 0;
         close $fh;
         exit;
@@ -135,7 +135,13 @@ sub _fork_and_eval {
 }
 
 sub _auto_execute {
-    my ($executer, $program, $fh, $out_filename) = @_;
+    my ($executer, $program, $fh, $out_filename, $lock_name) = @_;
+    local $^F = 1000;
+    open my $lock, ">", $lock_name;
+    unless (flock $lock, 6) {
+        print $fh "Rebuild in progress\n";
+        exit 1;
+    }
     if (reftype($executer) eq "CODE"){
         $executer->($program, $fh, $out_filename);
     } else {
