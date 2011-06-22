@@ -75,7 +75,7 @@ use Encode qw(encode);
 use charnames qw(:full);
 use POSIX ();
 
-my $max_output_len = 280;
+my $max_output_len = 290;
 
 sub run {
     my ($program, $executer, $ename) = @_;
@@ -94,8 +94,11 @@ sub run {
     my $null    = "\N{SYMBOL FOR NULL}";
     $response =~ s/\n/$newline/g;
     $response =~ s/\x00/$null/g;
-    if (bytes::length $response > $max_output_len){
-        $response = substr $response, 0, $max_output_len - 1;
+    my $prefix_len = bytes::length($ename) + 2;
+    if ($executer->{revision}) { $prefix_len += (1 + bytes::length($executer->{revision}->())); }
+    if (bytes::length($response) + $prefix_len > $max_output_len){
+	my $target = $max_output_len - 3 - $prefix_len;
+        $response = substr $response, 0, $target;
         $response .= '…';
     }
     return $response;
