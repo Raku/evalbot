@@ -4,5 +4,4 @@ date
 cd
 cd nom
 git pull
-perl Configure.pl --gen-parrot
-make -j2
+make || ( perl Configure.pl --gen-parrot && make -j2 )
