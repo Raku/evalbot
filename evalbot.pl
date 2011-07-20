@@ -251,7 +251,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             }
 	} elsif ($message =~ m/\Aevalbot\s*rebuild\s+(\w+)/) {
 	    system "./build.pl $1 &";
-	    return "OK (started asyncronously)";
+	    return "OK (started asynchronously)";
 	}
         return;
     }
