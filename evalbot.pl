@@ -252,10 +252,15 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             } elsif ($command eq 'version'){
                 return "This is evalbot revision $evalbot_version";
             }
-	} elsif ($message =~ m/\Aevalbot\s*rebuild\s+(\w+)/) {
-	    system "./build.pl $1 &";
-	    return "OK (started asynchronously)";
-	}
+        } elsif ($message =~ m/\Aevalbot\s*rebuild\s+(\w+)/) {
+            my $name = "$1";
+            if (EvalbotExecuter::try_lock($name)) {
+                system "./build.pl $name &";
+                return "OK (started asynchronously)";
+            } else {
+                return "NOT OK (maybe a rebuild is already in progress?)";
+            }
+        }
         return;
     }
 

@@ -117,7 +117,7 @@ sub _fork_and_eval {
     } elsif ($fork_val == 0) {
         POSIX::setpgid($$,$$);
         _set_resource_limits();
-        _auto_execute($executer, $program, $fh, $filename, "/home/p6eval/evalbot/build-scripts/lock.$ename");
+        _auto_execute($executer, $program, $fh, $filename, $ename);
         close $fh;
         exit;
     } else {
@@ -149,15 +149,22 @@ sub _fork_and_eval {
     return $result;
 }
 
+sub try_lock {
+    my $name = shift;
+    my $lockfile = "/home/p6eval/evalbot/build-scripts/lock.$name";
+    open my $lock, '>', $lockfile or return;
+    flock($lock, 6) && $lock;
+}
+
 sub _auto_execute {
     my ($executer, $program, $fh, $out_filename, $lock_name) = @_;
     local $^F = 1000;
-    open my $lock, ">", $lock_name;
     open STDOUT, ">&", $fh;
     open STDERR, ">&", $fh;
     # TODO: avoid hardcoded path
     open STDIN, "<", glob '~/evalbot/stdin';
-    if (!$executer->{nolock} && !flock $lock, 6) {
+    my $lock;
+    if (!$executer->{nolock} && !($lock = try_lock($lock_name)) ) {
         print "Rebuild in progress\n";
         exit 1;
     }
