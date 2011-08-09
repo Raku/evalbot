@@ -109,8 +109,8 @@ Q:PIR {
 >,
             },
             nom => {
-                chdir       => "$home/nom/",
-                cmd_line    => 'PERL6LIB=lib ./perl6 %program',
+                chdir       => "$home",
+                cmd_line    => './nom-inst/bin/perl6 %program',
                 filter      => \&filter_pct,
             },
             star => {
