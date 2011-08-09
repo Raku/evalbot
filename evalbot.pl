@@ -82,6 +82,7 @@ package Evalbot;
                 chdir       => "$home/rakudo/",
                 cmd_line    => 'PERL6LIB=lib ../p/bin/perl6 %program',
                 revision    => sub { get_revision_from_file('~/p/rakudo-revision')},
+                nolock      => 1,
                 filter      => \&filter_pct,
 # Rakudo loops infinitely when first using Safe.pm, and then declaring
 # another class. So don't do that, rather inline the contents of Safe.pm.
@@ -112,6 +113,7 @@ Q:PIR {
                 chdir       => "$home",
                 cmd_line    => './nom-inst/bin/perl6 %program',
                 filter      => \&filter_pct,
+                nolock      => 1,
             },
             star => {
                 chdir       => "$home/rakudo-star-2011.04/",
@@ -176,6 +178,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
                 chdir       => "$home/std/snap",
                 cmd_line    => 'perl tryfile %program',
                 revision    => sub { get_revision_from_file("$home/std/snap/revision")},
+                nolock      => 1,
             },
             yapsi   => {
                 chdir       => "$home/yapsi",

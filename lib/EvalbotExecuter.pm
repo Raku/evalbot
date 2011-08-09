@@ -115,7 +115,7 @@ sub _fork_and_eval {
     if (!defined $fork_val){
         confess "Can't fork(): $!";
     } elsif ($fork_val == 0) {
-	POSIX::setpgid($$,$$);
+        POSIX::setpgid($$,$$);
         _set_resource_limits();
         _auto_execute($executer, $program, $fh, $filename, "/home/p6eval/evalbot/build-scripts/lock.$ename");
         close $fh;
@@ -157,35 +157,31 @@ sub _auto_execute {
     open STDERR, ">&", $fh;
     # TODO: avoid hardcoded path
     open STDIN, "<", glob '~/evalbot/stdin';
-    unless (flock $lock, 6) {
+    if (!$executer->{nolock} && !flock $lock, 6) {
         print "Rebuild in progress\n";
         exit 1;
     }
-    if (reftype($executer) eq "CODE"){
-        $executer->($program);
-    } else {
-        if ($executer->{chdir}){
-            chdir $executer->{chdir}
-                or confess "Can't chdir to '$executer->{chdir}': $!";
-        }
-        if (exists $executer->{program_prefix}) {
-            $program = $executer->{program_prefix} . $program;
-        }
-        if (exists $executer->{program_suffix}) {
-            $program .= $executer->{program_suffix};
-        }
-        if (exists $executer->{program_munger}) {
-            $program = $executer->{program_munger}->($program);
-        }
-        my $cmd = $executer->{cmd_line} or confess "No command line given\n";
-        my ($prog_fh, $program_file_name) = tempfile();
-        binmode $prog_fh, ':encoding(UTF-8)';
-        print $prog_fh $program;
-        close $prog_fh;
-
-        $cmd =~ s/\%program\b/$program_file_name/g;
-        system($cmd);
+    if ($executer->{chdir}){
+        chdir $executer->{chdir}
+            or confess "Can't chdir to '$executer->{chdir}': $!";
     }
+    if (exists $executer->{program_prefix}) {
+        $program = $executer->{program_prefix} . $program;
+    }
+    if (exists $executer->{program_suffix}) {
+        $program .= $executer->{program_suffix};
+    }
+    if (exists $executer->{program_munger}) {
+        $program = $executer->{program_munger}->($program);
+    }
+    my $cmd = $executer->{cmd_line} or confess "No command line given\n";
+    my ($prog_fh, $program_file_name) = tempfile();
+    binmode $prog_fh, ':encoding(UTF-8)';
+    print $prog_fh $program;
+    close $prog_fh;
+
+    $cmd =~ s/\%program\b/$program_file_name/g;
+    system($cmd);
 }
 
 sub _set_resource_limits {
