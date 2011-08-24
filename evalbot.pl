@@ -114,6 +114,7 @@ Q:PIR {
                 cmd_line    => './nom-inst/bin/perl6 %program',
                 filter      => \&filter_pct,
                 nolock      => 1,
+                revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
             },
             star => {
                 chdir       => "$home/rakudo-star-2011.04/",
