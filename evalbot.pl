@@ -78,7 +78,7 @@ package Evalbot;
                 cmd_line    => './try2.sh %program',
                 #revision    => sub { get_revision_from_file('~/6model/VERSION'
             },
-            rakudo => {
+            b => {
                 chdir       => "$home/rakudo/",
                 cmd_line    => 'PERL6LIB=lib ../p/bin/perl6 %program',
                 revision    => sub { get_revision_from_file('~/p/rakudo-revision')},
@@ -109,7 +109,7 @@ Q:PIR {
 # EVALBOT ARTIFACT
 >,
             },
-            nom => {
+            rakudo => {
                 chdir       => "$home",
                 cmd_line    => './nom-inst/bin/perl6 %program',
                 filter      => \&filter_pct,
