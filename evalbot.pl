@@ -111,7 +111,14 @@ Q:PIR {
             },
             rakudo => {
                 chdir       => "$home",
-                cmd_line    => './nom-inst/bin/perl6 %program',
+                cmd_line    => './nom-inst/bin/perl6 --setting=SAFE %program',
+                filter      => \&filter_pct,
+                nolock      => 1,
+                revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
+            },
+            nom => {
+                chdir       => "$home",
+                cmd_line    => './nom-inst/bin/perl6 --setting=SAFE %program',
                 filter      => \&filter_pct,
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
