@@ -67,6 +67,7 @@ the temp file.
 use strict;
 use warnings;
 use utf8;
+use Config;
 use BSD::Resource;
 use Carp qw(confess);
 use File::Temp qw(tempfile);
@@ -118,8 +119,6 @@ sub _fork_and_eval {
         POSIX::setpgid($$,$$);
         _set_resource_limits();
         _auto_execute($executer, $program, $fh, $filename, $ename);
-        close $fh;
-        exit;
     } else {
 # server
 	alarm 12;
@@ -141,7 +140,7 @@ sub _fork_and_eval {
     if ($timed_out) {
 	$result = "(timeout)" . $result;
     } elsif ($? & 127) {
-        $result = "(signal $?)" . $result;
+        $result = "(signal " . (split ' ', $Config{sig_name})[$?] . ")" . $result;
     }
     if (reftype($executer) eq 'HASH' && $executer->{filter}){
         return $executer->{filter}->($result);
@@ -188,7 +187,9 @@ sub _auto_execute {
     close $prog_fh;
 
     $cmd =~ s/\%program\b/$program_file_name/g;
-    system($cmd);
+    close $fh;
+    exec($cmd);
+    die "exec ($cmd) failed: $!\n";
 }
 
 sub _set_resource_limits {
