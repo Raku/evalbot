@@ -315,7 +315,22 @@ set_hll_global [\'IO\'], \'Socket\', $P0
 package main;
 
 my $config_file = shift @ARGV 
-    or confess("Usage: $0 <config_file>");
+    or confess("Usage: $0 <config_file>\n   or: $0 -run <impl> <code>");
+
+if ($config_file eq '-run') {
+    my ($eval_name, $str) = @ARGV;
+    my $e = $Evalbot::impls{$eval_name};
+    die("No such implementation.\n") unless $e;
+    my $result = EvalbotExecuter::run($str, $e, $eval_name);
+    my $revision = '';
+    if (Scalar::Util::reftype($e) eq 'HASH' && $e->{revision}){
+	$revision = ' ' . $e->{revision}->();
+    }
+    binmode STDOUT, ':utf8';
+    printf "%s%s: %s\n", $eval_name, $revision, $result;
+    exit 0;
+}
+
 my %conf = %{ Config::File::read_config_file($config_file) };
 
 #warn Dumper(\%conf);
