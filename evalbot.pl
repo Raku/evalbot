@@ -184,7 +184,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             },
             std  => {
                 chdir       => "$home/std/snap",
-                cmd_line    => 'perl tryfile %program',
+                cmd_line    => 'perl -I. tryfile %program',
                 revision    => sub { get_revision_from_file("$home/std/snap/revision")},
                 nolock      => 1,
             },
