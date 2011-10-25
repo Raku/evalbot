@@ -75,6 +75,7 @@ use Scalar::Util qw(reftype);
 use Encode qw(encode);
 use charnames qw(:full);
 use POSIX ();
+use Encode qw/decode_utf8/;
 
 my $max_output_len = 290;
 
@@ -83,7 +84,7 @@ sub run {
     if ($program =~ /^https:\/\/gist\.github\.com\/\d+$/) {
       my $page = `curl -s $program`;
       $page =~ /href="\/raw([^"]+)"/;
-      if ($1) { $program = `curl -s https://raw.github.com/gist$1` } else { return 'gist not found' };
+      if ($1) { $program = decode_utf8 `curl -s https://raw.github.com/gist$1` } else { return 'gist not found' };
     }
     my $response = _fork_and_eval($program, $executer, $ename);
     if (!length $response){
