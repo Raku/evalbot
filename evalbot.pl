@@ -78,6 +78,11 @@ package Evalbot;
                 cmd_line    => './try2.sh %program',
                 #revision    => sub { get_revision_from_file('~/6model/VERSION'
             },
+            nqplua => {
+                chdir       => "$home/nqplua/6model/lua/compiler",
+                cmd_line    => './try.sh %program',
+                #revision    => sub { get_revision_from_file('~/nqplua/VERSION'
+            },
             b => {
                 chdir       => "$home/rakudo/",
                 cmd_line    => 'PERL6LIB=lib ../p/bin/perl6 %program',
