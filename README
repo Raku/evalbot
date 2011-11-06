@@ -2,3 +2,15 @@ This is an IRC bot, which is designed to execute Perl 6 commands from IRC, and
 echo the output on IRC again.
 
 Might also work for other languages :-)
+
+To add a new execution target, conduct the following steps:
+
+ * build it on the server
+ * write a script that updates the repo and rebuilds. Store it in the evalbot
+   repo under build-scripts/rebuild-<targetname>.sh or .pl
+ * add a cron job for regular rebuilding (crontab -e)
+ * add the target to %impls in evalbot.pl
+ * push everything
+ * pull on the server
+ * restart evalbot
+ * PROFIT
