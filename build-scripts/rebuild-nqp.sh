@@ -6,4 +6,4 @@ date
 cd nqp
 git pull
 perl Configure.pl --gen-parrot
-make -j2
+make
