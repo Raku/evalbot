@@ -85,6 +85,14 @@ sub run {
       my $page = `curl -s $program`;
       $page =~ /href="\/raw([^"]+)"/;
       if ($1) { $program = decode_utf8 `curl -s https://raw.github.com/gist$1` } else { return 'gist not found' };
+    } elsif ($program =~ /^https:\/\/github\.com\/([^\/]+\/[^\/]+)\/blob\/([^\/]+\/[^\/].*)$/) {
+      my ($project, $file) = ($1, $2);
+      my $page = `curl -s $program`;
+      if ($page =~ /href="\/$project\/raw\/$file"/) {
+      	$program = decode_utf8 `curl -s https://raw.github.com/$project/$file`
+      } else {
+      	return 'file not found'
+      };
     }
     my $response = _fork_and_eval($program, $executer, $ename);
     if (!length $response){
