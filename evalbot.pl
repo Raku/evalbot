@@ -268,8 +268,9 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             }
         } elsif ($message =~ m/\Aevalbot\s*rebuild\s+(\w+)/) {
             my $name = "$1";
+            # XXX We want better integration so that this can go to the right place
             if (EvalbotExecuter::try_lock($name)) {
-                system "./build.pl $name &";
+                system "(./build.pl $name; echo 'freenode #perl6 Rebuild of $name complete.' >> /home/p6eval/dalek-queue) &";
                 return "OK (started asynchronously)";
             } else {
                 return "NOT OK (maybe a rebuild is already in progress?)";
