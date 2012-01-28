@@ -129,34 +129,10 @@ Q:PIR {
                 revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
             },
             star => {
-                chdir       => "$home/rakudo-star-2011.04/",
-                cmd_line    => './install/bin/perl6 %program',
-                revision    => sub { '2011.04' },
+                chdir       => "$home/rakudo-star-2012.01/",
+                cmd_line    => './install/bin/perl6 --setting=SAFE %program',
+                revision    => sub { '2012.01' },
                 filter      => \&filter_pct,
-# Rakudo loops infinitely when first using Safe.pm, and then declaring
-# another class. So don't do that, rather inline the contents of Safe.pm.
-                program_prefix => q<
-module Safe { our sub forbidden(*@a, *%h) { die "Operation not permitted in safe mode" };
-    Q:PIR {
-        $P0 = get_hll_namespace
-        $P1 = get_hll_global ['Safe'], '&forbidden'
-        $P0['!qx']  = $P1
-        null $P1
-        set_hll_global ['IO'], 'Socket', $P1
-    }; };
-Q:PIR {
-    .local pmc s
-    s = get_hll_global ['Safe'], '&forbidden'
-    $P0 = getinterp
-    $P0 = $P0['outer';'lexpad';1]
-    $P0['&run'] = s
-    $P0['&open'] = s
-    $P0['&slurp'] = s
-    $P0['&unlink'] = s
-    $P0['&dir'] = s
-};
-# EVALBOT ARTIFACT
->,
             },
             alpha => {
                 chdir       => "$home/rakudo-alpha/",
