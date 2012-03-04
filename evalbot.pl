@@ -53,6 +53,12 @@ package Evalbot;
 
     my $home = glob '~';
 
+    my %aliases = (
+        nom => 'rakudo',
+        r   => 'rakudo',
+        n   => 'niecza',
+    );
+
     our %impls = (
             'partcl' => {
                 chdir       => "$home/partcl-nqp",
@@ -121,13 +127,6 @@ Q:PIR {
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
             },
-            nom => {
-                chdir       => "$home",
-                cmd_line    => './nom-inst/bin/perl6 --setting=SAFE %program',
-                filter      => \&filter_pct,
-                nolock      => 1,
-                revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
-            },
             star => {
                 chdir       => "$home/rakudo-star-2012.01/",
                 cmd_line    => './install/bin/perl6 --setting=SAFE %program',
@@ -183,7 +182,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
 
     my $evalbot_version = get_revision();
 
-    my $regex = $prefix . '(' . join('|',  keys %impls) . ")$postfix";
+    my $regex = $prefix . '(' . join('|',  keys(%impls), keys(%aliases)) . ")$postfix";
 
     sub help {
         return "Usage: <$regex \$perl6_program>";
@@ -202,6 +201,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
             return "Usage: ", join(',', sort keys %impls), ': $code';
         } elsif ($message =~ m/\A$regex\s*(.*)\z/s){
             my ($eval_name, $str) = ($1, $2);
+            $eval_name = $aliases{$eval_name} if exists $aliases{$eval_name};
             my $e = $impls{$eval_name};
             return "Please use /msg $self->{nick} $str" 
                 if($eval_name eq 'highlight');
