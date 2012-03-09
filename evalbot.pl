@@ -57,6 +57,7 @@ package Evalbot;
         nom => 'rakudo',
         r   => 'rakudo',
         n   => 'niecza',
+        p   => 'pugs',
     );
 
     our %impls = (
