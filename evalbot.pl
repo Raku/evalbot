@@ -212,7 +212,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
                 $revision = ' ' . $e->{revision}->();
             }
             return sprintf "%s%s: %s", $eval_name, $revision, $result;
-        } elsif ( $message =~ m/\Aperl6:\s+(.+)\z/s ){
+        } elsif ( $message =~ m/\Ap(?:erl)?6:\s+(.+)\z/s ){
             my $str = $1;
             return "Program empty" unless length $str;
             warn "$info->{channel} <$info->{who}> Perl6: $str\n";
