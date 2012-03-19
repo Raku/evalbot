@@ -161,8 +161,7 @@ set_hll_global [\'IO\'], \'Socket\', $P0
                 filter      => \&filter_pct,
             },
             pugs => {
-                cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/Pugs.hs/Pugs %program",
-                revision    => sub { get_revision_from_file("$home/ghc-7.2.1/pugs_version")},
+                cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/Pugs.hs/Pugs/pugs %program",
             },
             std  => {
                 chdir       => "$home/std/snap",
