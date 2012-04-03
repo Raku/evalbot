@@ -14,6 +14,7 @@ my %dirs = (
 if ($dirs{$sync}) {
     my @to_sync = @{$dirs{$sync}};
     my $dest    = pop @to_sync;
+    chdir glob('~') or die "Cannot chdir: $!";
     system('rsync', '-az', '--delete', @to_sync, "feather3:$dest");
     if ($? == -1) {
         say "failed to execute rsync: $!";
