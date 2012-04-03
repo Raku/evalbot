@@ -61,35 +61,35 @@ package Evalbot;
     );
 
     our %impls = (
-            'partcl' => {
-                chdir       => "$home/partcl-nqp",
-                cmd_line    => './partcl %program',
-                filter      => \&filter_pct,
-                revision    => sub { get_revision_from_file('/home/p6eval/partcl-nqp/.revision', 6)},
-            },
-            perlesque => {
-                chdir       => "$home/sprixel/sprixel/sprixel/bin/Release",
-                cmd_line    => '/home/p6eval/sprixel/clr/bin/mono --gc=sgen sprixel.exe -s %program',
-            },
-            mildew  => {
-                chdir       => $home,
-                cmd_line    => '/home/mildew/perl5/perlbrew/bin/perl /home/mildew/perl5/perlbrew/perls/current/bin/mildew %program',
-            },
+#            'partcl' => {
+#                chdir       => "$home/partcl-nqp",
+#                cmd_line    => './partcl %program',
+#                filter      => \&filter_pct,
+#                revision    => sub { get_revision_from_file('/home/p6eval/partcl-nqp/.revision', 6)},
+#            },
+#            perlesque => {
+#                chdir       => "$home/sprixel/sprixel/sprixel/bin/Release",
+#                cmd_line    => '/home/p6eval/sprixel/clr/bin/mono --gc=sgen sprixel.exe -s %program',
+#            },
+#            mildew  => {
+#                chdir       => $home,
+#                cmd_line    => '/home/mildew/perl5/perlbrew/bin/perl /home/mildew/perl5/perlbrew/perls/current/bin/mildew %program',
+#            },
             niecza => {
                 chdir       => "$home/niecza",
                 cmd_line    => 'PATH=/usr/local/mono-2.10.1/bin:/usr/local/bin:/usr/bin:/bin LD_LIBRARY_PATH=/usr/local/mono-2.10.1/lib mono ./run/Niecza.exe --safe %program',
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
-            nqpnet => {
-                chdir       => "$home/6model/dotnet/compiler",
-                cmd_line    => './try2.sh %program',
-                #revision    => sub { get_revision_from_file('~/6model/VERSION'
-            },
-            nqplua => {
-                chdir       => "$home/nqplua/6model/lua/compiler",
-                cmd_line    => './try.sh %program',
-                #revision    => sub { get_revision_from_file('~/nqplua/VERSION'
-            },
+#            nqpnet => {
+#                chdir       => "$home/6model/dotnet/compiler",
+#                cmd_line    => './try2.sh %program',
+#                #revision    => sub { get_revision_from_file('~/6model/VERSION'
+#            },
+#            nqplua => {
+#                chdir       => "$home/nqplua/6model/lua/compiler",
+#                cmd_line    => './try.sh %program',
+#                #revision    => sub { get_revision_from_file('~/nqplua/VERSION'
+#            },
             b => {
                 chdir       => "$home/rakudo/",
                 cmd_line    => 'PERL6LIB=lib ../p/bin/perl6 %program',
@@ -124,42 +124,40 @@ Q:PIR {
             rakudo => {
                 chdir       => "$home",
                 cmd_line    => './nom-inst/bin/perl6 --setting=SAFE %program',
-                filter      => \&filter_pct,
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
             },
             star => {
-                chdir       => "$home/rakudo-star-2012.01/",
-                cmd_line    => './install/bin/perl6 --setting=SAFE %program',
-                revision    => sub { '2012.01' },
-                filter      => \&filter_pct,
+                chdir       => "$home/star/",
+                cmd_line    => './bin/perl6 --setting=SAFE %program',
+                revision    => sub { get_revision_from_file("$home/star/version") },
             },
-            alpha => {
-                chdir       => "$home/rakudo-alpha/",
-                cmd_line    => 'PERL6LIB=lib ../rakudo-alpha/perl6 %program',
-                revision    => sub { get_revision_from_file('~/rakudo-alpha/revision')},
-                filter      => \&filter_pct,
-                program_prefix => 'my $ss_SS_S_S__S_S_s = -> *@a, *%h { die "operation not permitted in safe mode" };
-    Q:PIR {
-$P0 = get_hll_namespace
-$P1 = find_lex \'$ss_SS_S_S__S_S_s\'
-$P0[\'run\']  = $P1
-$P0[\'open\'] = $P1
-$P0[\'!qx\']  = $P1
-null $P1
-set_hll_global [\'IO\'], \'Socket\', $P0
-    };',
-            },
+#            alpha => {
+#                chdir       => "$home/rakudo-alpha/",
+#                cmd_line    => 'PERL6LIB=lib ../rakudo-alpha/perl6 %program',
+#                revision    => sub { get_revision_from_file('~/rakudo-alpha/revision')},
+#                filter      => \&filter_pct,
+#                program_prefix => 'my $ss_SS_S_S__S_S_s = -> *@a, *%h { die "operation not permitted in safe mode" };
+#    Q:PIR {
+#$P0 = get_hll_namespace
+#$P1 = find_lex \'$ss_SS_S_S__S_S_s\'
+#$P0[\'run\']  = $P1
+#$P0[\'open\'] = $P1
+#$P0[\'!qx\']  = $P1
+#null $P1
+#set_hll_global [\'IO\'], \'Socket\', $P0
+#    };',
+#            },
             nqp   => {
-                chdir       => "$home/nqp",
-                cmd_line    => './nqp %program',
+                chdir       => "$home",
+                cmd_line    => './nom-inst/bin/nqp %program',
                 filter      => \&filter_pct,
             },
-            nqprx => {
-                chdir       => "$home/nqp-rx",
-                cmd_line    => './nqp %program',
-                filter      => \&filter_pct,
-            },
+#            nqprx => {
+#                chdir       => "$home/nqp-rx",
+#                cmd_line    => './nqp %program',
+#                filter      => \&filter_pct,
+#            },
             pugs => {
                 cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/Pugs.hs/Pugs/pugs %program",
             },
@@ -169,15 +167,15 @@ set_hll_global [\'IO\'], \'Socket\', $P0
                 revision    => sub { get_revision_from_file("$home/std/snap/revision")},
                 nolock      => 1,
             },
-            yapsi   => {
-                chdir       => "$home/yapsi",
-                cmd_line    => 'PERL6LIB=lib /home/p6eval/p/bin/perl6 bin/yapsi %program',
-            },
-            highlight  => {
-                chdir       => "$home/std/snap/std_hilite",
-                cmd_line    => $^X . ' STD_syntax_highlight %program',
-                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
-            },
+#            yapsi   => {
+#                chdir       => "$home/yapsi",
+#                cmd_line    => 'PERL6LIB=lib /home/p6eval/p/bin/perl6 bin/yapsi %program',
+#            },
+#            highlight  => {
+#                chdir       => "$home/std/snap/std_hilite",
+#                cmd_line    => $^X . ' STD_syntax_highlight %program',
+#                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
+#            },
     );
 
     my $evalbot_version = get_revision();

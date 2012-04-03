@@ -9,6 +9,7 @@ my %dirs = (
     niecza  => [qw/niecza/, ''],
     pugs    => [qw!Pugs.hs/Pugs/ Pugs.hs/Pugs/!],
     std     => [qw!std/snap/ std/snap/!],
+    star    => [qw/star/, ''],
 );
 
 if ($dirs{$sync}) {
