@@ -15,4 +15,4 @@ my $script = first { -e $_ } "$script_dir/rebuild-$what.pl", "$script_dir/rebuil
 die "Found no rebuild script for $what\n" unless $script;
 
 system "flock -w 60 $script_dir/lock.$what $script >~/log/$what.log 2>&1";
-system "$^X $FindBin::Bin/sync.pl",  $what;
+system $^X, "$FindBin::Bin/sync.pl",  $what;
