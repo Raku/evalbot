@@ -58,8 +58,8 @@ package Evalbot;
         r   => 'rakudo',
         n   => 'niecza',
         p   => 'pugs',
-        p6  => [qw/rakudo niecza pugs/],
-        perl6  => [qw/rakudo niecza pugs/],
+        p6  => [qw/rakudo niecza/],
+        perl6  => [qw/rakudo niecza/],
         rn  => [qw/rakudo niecza/ ],
         nr  => [qw/rakudo niecza/ ],
     );
