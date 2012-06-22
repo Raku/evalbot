@@ -63,6 +63,7 @@ package Evalbot;
         rn  => [qw/rakudo niecza/ ],
         nr  => [qw/rakudo niecza/ ],
     );
+    $aliases{$_} = [qw/rakudo niecza pugs/] for qw/rnp rpn nrp npr prn pnr/;
 
     our %impls = (
 #            'partcl' => {
