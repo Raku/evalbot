@@ -6,26 +6,19 @@ use 5.010;
 use autodie;
 use Data::Dumper;
 
-chdir glob '~';
+my $home = glob('~');
+my $qhome = "$home/toqast";
 
-my $home = glob('~') . '/';
-my @dirs = qw(toqast-inst1 toqast-inst2);
-my %swap = (@dirs, reverse(@dirs));
 
-my $link = 'toqast-inst';
-
-my $now = readlink $link;
-my $other = $swap{$now};
-
-say "Other: '$other'";
-chdir "${home}toqast/parrot";
+chdir "$qhome/parrot";
 system('git', 'pull');
-chdir "${home}toqast/nqp";
+chdir "$qhome/nqp";
+system('git', 'checkout', 'toqast');
 system('git', 'pull');
-chdir "${home}toqast";
+chdir $qhome;
 system('git', 'pull');
 
-my $revision_file = "$home$other/rakudo-revision";
+my $revision_file = "$qhome/rakudo-revision";
 eval {
     open my $fh, '<', $revision_file or break;
     my $r = <$fh>;
@@ -40,20 +33,15 @@ eval {
     }
 };
 
-chdir "${home}toqast/parrot";
-system($^X, 'Configure.pl', "--prefix=$home$other", '--optimize');
+chdir "$qhome/parrot";
+system($^X, 'Configure.pl', "--prefix=$qhome/install", '--optimize');
 system('make', 'install')
                                 and die $?;
-chdir "${home}toqast/nqp";
-system($^X, 'Configure.pl', '--with-parrot=../parrot/parrot');
+chdir "$qhome/nqp";
+system($^X, 'Configure.pl', '--with-parrot=$home/install/bin/parrot');
 system('make', 'install')       and die $?;
 chdir "${home}toqast";
-system($^X, 'Configure.pl', "--gen-parrot");
+system($^X, 'Configure.pl');
 system('make', 'install')       and die $?;
-system('cp', '-r', <install/*>, "$home$other");
 system("git rev-parse HEAD | cut -b 1,2,3,4,5,6 > $revision_file") and warn $?;
-
-chdir $home;
-unlink $link;
-symlink $other, $link;
 
