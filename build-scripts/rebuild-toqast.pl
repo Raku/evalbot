@@ -18,6 +18,8 @@ my $now = readlink $link;
 my $other = $swap{$now};
 
 say "Other: '$other'";
+chdir "${home}toqast/parrot";
+system('git', 'pull');
 chdir "${home}toqast/nqp";
 system('git', 'pull');
 chdir "${home}toqast";
@@ -38,6 +40,9 @@ eval {
     }
 };
 
+chdir "${home}toqast/parrot";
+system($^X, 'Configure.pl', "--prefix=$home$other", '--optimize', '&&', 'make', 'install')
+                                and die $?;
 chdir "${home}toqast/nqp";
 system($^X, 'Configure.pl', '--with-parrot=../parrot/parrot');
 system('make', 'install')       and die $?;
