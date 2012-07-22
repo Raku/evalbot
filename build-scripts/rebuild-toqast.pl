@@ -41,7 +41,8 @@ eval {
 };
 
 chdir "${home}toqast/parrot";
-system($^X, 'Configure.pl', "--prefix=$home$other", '--optimize', '&&', 'make', 'install')
+system($^X, 'Configure.pl', "--prefix=$home$other", '--optimize');
+system('make', 'install')
                                 and die $?;
 chdir "${home}toqast/nqp";
 system($^X, 'Configure.pl', '--with-parrot=../parrot/parrot');
