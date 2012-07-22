@@ -38,9 +38,9 @@ system($^X, 'Configure.pl', "--prefix=$qhome/install", '--optimize');
 system('make', 'install')
                                 and die $?;
 chdir "$qhome/nqp";
-system($^X, 'Configure.pl', "--with-parrot=$home/install/bin/parrot");
+system($^X, 'Configure.pl', "--with-parrot=$qhome/install/bin/parrot");
 system('make', 'install')       and die $?;
-chdir "${home}toqast";
+chdir $qhome;
 system($^X, 'Configure.pl');
 system('make', 'install')       and die $?;
 system("git rev-parse HEAD | cut -b 1,2,3,4,5,6 > $revision_file") and warn $?;

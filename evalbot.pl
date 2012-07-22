@@ -140,7 +140,7 @@ Q:PIR {
             },
             toqast => {
                 chdir       => "$home",
-                cmd_line    => './toqast-inst/bin/perl6 --setting=RESTRICTED %program',
+                cmd_line    => './toqast/install/bin/perl6 --setting=RESTRICTED %program',
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/toqast-inst/rakudo-revision')},
             },
