@@ -58,12 +58,8 @@ package Evalbot;
         r   => 'rakudo',
         n   => 'niecza',
         p   => 'pugs',
-        p6  => [qw/rakudo niecza/],
-        perl6  => [qw/rakudo niecza/],
-        rn  => [qw/rakudo niecza/ ],
-        nr  => [qw/rakudo niecza/ ],
+        t   => 'toqast',
     );
-    $aliases{$_} = [qw/rakudo niecza pugs/] for qw/rnp rpn nrp npr prn pnr/;
 
     our %impls = (
 #            'partcl' => {
@@ -128,7 +124,7 @@ Q:PIR {
             },
             rakudo => {
                 chdir       => "$home",
-                cmd_line    => './nom-inst/bin/perl6 --setting=RESTRICTED %program',
+                cmd_line    => './nom-inst/bin/perl6 --setting=SAFE %program',
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
             },
@@ -136,6 +132,12 @@ Q:PIR {
                 chdir       => "$home/star/",
                 cmd_line    => './bin/perl6 --setting=SAFE %program',
                 revision    => sub { get_revision_from_file("$home/star/version") },
+            },
+            toqast => {
+                chdir       => "$home",
+                cmd_line    => './toqast-inst/bin/perl6 --setting=SAFE %program',
+                nolock      => 1,
+                revision    => sub { get_revision_from_file('~/toqast-inst/rakudo-revision')},
             },
 #            alpha => {
 #                chdir       => "$home/rakudo-alpha/",
@@ -204,30 +206,10 @@ Q:PIR {
             return "Usage: ", join(',', sort keys %impls), ': $code';
         } elsif ($message =~ m/\A$regex\s*(.*)\z/s){
             my ($eval_name, $str) = ($1, $2);
-            return "Program empty" unless length $str;
-            if (ref $aliases{$eval_name}) {
-                warn "$info->{channel} <$info->{who}> Perl6: $str\n";
-                my %results;
-                for my $eval_name (@{ $aliases{$eval_name} }) {
-                    my $e = $impls{$eval_name};
-                    my $tmp_res = EvalbotExecuter::run($str, $e, $eval_name);
-                    my $revision = '';
-                    if (reftype($e) eq 'HASH' && $e->{revision}){
-                        $revision = ' ' . $e->{revision}->();
-                    }
-                    push @{$results{$tmp_res}}, "$eval_name$revision";
-                }
-                my $result = '';
-                while (my ($text, $names) = each %results){
-                    $result .= join(', ', @$names);
-                    $result .= sprintf(": %s\n", $text);
-                }
-                return $result;
-            }
-            elsif ($aliases{$eval_name}) {
-                $eval_name = $aliases{$eval_name}
-            }
+            $eval_name = $aliases{$eval_name} if exists $aliases{$eval_name};
             my $e = $impls{$eval_name};
+            return "Please use /msg $self->{nick} $str" 
+                if($eval_name eq 'highlight');
             warn "$info->{channel} <$info->{who}> $eval_name: $str\n";
             my $result = EvalbotExecuter::run($str, $e, $eval_name);
             my $revision = '';
@@ -235,6 +217,27 @@ Q:PIR {
                 $revision = ' ' . $e->{revision}->();
             }
             return sprintf "%s%s: %s", $eval_name, $revision, $result;
+        } elsif ( $message =~ m/\Ap(?:erl)?6:\s+(.+)\z/s ){
+            my $str = $1;
+            return "Program empty" unless length $str;
+            warn "$info->{channel} <$info->{who}> Perl6: $str\n";
+            my %results;
+            for my $eval_name (qw(pugs rakudo niecza)) {
+                my $e = $impls{$eval_name};
+                my $tmp_res = EvalbotExecuter::run($str, $e, $eval_name);
+                my $revision = '';
+                if (reftype($e) eq 'HASH' && $e->{revision}){
+                    $revision = ' ' . $e->{revision}->();
+                }
+                push @{$results{$tmp_res}}, "$eval_name$revision";
+            }
+            my $result = '';
+            while (my ($text, $names) = each %results){
+                $result .= join(', ', @$names);
+                $result .= sprintf(": %s\n", $text);
+            }
+            return $result;
+
         } elsif ( $message =~ m/\Aevalbot\s*control\s+(\w+)/) {
             my $command = $1;
             if ($command eq 'restart'){
