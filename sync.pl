@@ -6,6 +6,7 @@ my $sync = shift;
 my %dirs = (
     rakudo  => [qw/p1 p2 p/, ''],
     nom     => [qw/nom-inst1 nom-inst2 nom-inst/, ''],
+    toqast  => [qw/toqast-inst1 toqast-inst2 toqast-inst/, ''],
     niecza  => [qw/niecza/, ''],
     pugs    => [qw!Pugs.hs/Pugs/ Pugs.hs/Pugs/!],
     std     => [qw!std/snap/ std/snap/!],
