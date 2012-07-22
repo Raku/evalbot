@@ -38,7 +38,7 @@ system($^X, 'Configure.pl', "--prefix=$qhome/install", '--optimize');
 system('make', 'install')
                                 and die $?;
 chdir "$qhome/nqp";
-system($^X, 'Configure.pl', '--with-parrot=$home/install/bin/parrot');
+system($^X, 'Configure.pl', "--with-parrot=$home/install/bin/parrot");
 system('make', 'install')       and die $?;
 chdir "${home}toqast";
 system($^X, 'Configure.pl');
