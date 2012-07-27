@@ -62,7 +62,6 @@ package Evalbot;
         perl6  => [qw/rakudo niecza/],
         rn  => [qw/rakudo niecza/ ],
         nr  => [qw/rakudo niecza/ ],
-        t   => 'toqast',
     );
     $aliases{$_} = [qw/rakudo niecza pugs/] for qw/rnp rpn nrp npr prn pnr/;
 
@@ -137,12 +136,6 @@ Q:PIR {
                 chdir       => "$home/star/",
                 cmd_line    => './bin/perl6 --setting=SAFE %program',
                 revision    => sub { get_revision_from_file("$home/star/version") },
-            },
-            toqast => {
-                chdir       => "$home",
-                cmd_line    => './toqast/install/bin/perl6 --setting=RESTRICTED %program',
-                nolock      => 1,
-                revision    => sub { get_revision_from_file('~/toqast-inst/rakudo-revision')},
             },
 #            alpha => {
 #                chdir       => "$home/rakudo-alpha/",
