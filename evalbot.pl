@@ -82,7 +82,7 @@ package Evalbot;
 #            },
             niecza => {
                 chdir       => "$home/niecza",
-                cmd_line    => 'PATH=/usr/local/mono-2.10.1/bin:/usr/local/bin:/usr/bin:/bin LD_LIBRARY_PATH=/usr/local/mono-2.10.1/lib mono ./run/Niecza.exe --safe %program',
+                cmd_line    => 'PATH=/usr/local/mono-2.10.1/bin:/usr/local/bin:/usr/bin:/bin LD_LIBRARY_PATH=/usr/local/mono-2.10.1/lib mono ./run/Niecza.exe --safe --obj-dir=obj %program',
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
 #            nqpnet => {
