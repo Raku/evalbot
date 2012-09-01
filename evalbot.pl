@@ -201,7 +201,7 @@ Q:PIR {
         $message =~ s/␤/\n/g;
 
         if ($message =~ m/^p6eval:/) {
-            return "Usage: ", join(',', sort keys %impls), ': $code';
+            return "Usage: " . join(',', sort keys %impls) . ': $code';
         } elsif ($message =~ m/\A$regex\s*(.*)\z/s){
             my ($eval_name, $str) = ($1, $2);
             return "Program empty" unless length $str;
