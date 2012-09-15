@@ -6,4 +6,4 @@ cd ~/niecza/
 git pull
 ulimit -v 307200
 make
-mono run/Niecza.exe -C Test JSYNC Threads
+mono run/Niecza.exe --obj-dir=obj -C Test JSYNC Threads
