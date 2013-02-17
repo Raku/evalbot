@@ -81,10 +81,10 @@ my $max_output_len = 290;
 
 sub run {
     my ($program, $executer, $ename) = @_;
-    if ($program =~ /^https:\/\/gist\.github\.com\/\d+$/) {
+    if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/\d+$/) {
       my $page = `curl -s $program`;
-      $page =~ /href="\/raw([^"]+)"/;
-      if ($1) { $program = decode_utf8 `curl -s https://raw.github.com/gist$1` } else { return 'gist not found' };
+      $page =~ /<a title="View Raw" href="([^"]+)"/;
+      if ($1) { $program = decode_utf8 `curl -s https://gist.github.com$1` } else { return 'gist not found' };
     } elsif ($program =~ /^https:\/\/github\.com\/([^\/]+\/[^\/]+)\/blob\/([^\/]+\/[^\/].*)$/) {
       my ($project, $file) = ($1, $2);
       my $page = `curl -s $program`;
