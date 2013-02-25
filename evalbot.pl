@@ -134,7 +134,7 @@ Q:PIR {
             },
             star => {
                 chdir       => "$home/star/",
-                cmd_line    => './bin/perl6 --setting=SAFE %program',
+                cmd_line    => './bin/perl6 --setting=RESTRICTED %program',
                 revision    => sub { get_revision_from_file("$home/star/version") },
             },
 #            alpha => {
