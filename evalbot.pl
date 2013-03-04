@@ -158,6 +158,10 @@ Q:PIR {
                 cmd_line    => './nom-inst/bin/nqp %program',
                 filter      => \&filter_pct,
             },
+            'nqp-jvm'   => {
+                chdir       => "$home/nqp-jvm/",
+                cmd_line    => './jdk1.7.0/bin/java -cp .:bin:3rdparty/bcel/bcel-5.2.jar NQPJVM %program',
+            },
 #            nqprx => {
 #                chdir       => "$home/nqp-rx",
 #                cmd_line    => './nqp %program',
