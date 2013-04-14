@@ -299,6 +299,11 @@ Q:PIR {
             return "parse OK";
         }
     }
+
+    sub connected {
+        my $bot = shift;
+        $bot->say(who=>'nickserv',channel=>'msg',body=>"identify $bot->{__nickpass}") if exists $bot->{__nickpass};
+    }
 }
 
 package main;
@@ -334,6 +339,7 @@ my $bot = Evalbot->new(
         name      => "combined, experimental evalbot",
         charset   => "utf-8",
         );
+$bot->{__nickpass} = $conf{pass} if exists $conf{pass};
 $bot->run();
 
 # vim: ts=4 sw=4 expandtab
