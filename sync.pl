@@ -12,6 +12,7 @@ my %dirs = (
     std     => [qw!std/snap/ std/snap/!],
     star    => [qw/star/, ''],
     pugs    => [qw/.cabal Pugs.hs/, ''],
+    'nqp-jvm' => [qw/nqp-jvm/, ''],
 );
 
 if ($dirs{$sync}) {
