@@ -81,7 +81,7 @@ my $max_output_len = 290;
 
 sub run {
     my ($program, $executer, $ename) = @_;
-    if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/\d+$/) {
+    if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/\p{HexDigit}+$/) {
       my $page = `curl -s $program`;
       $page =~ /<a title="View Raw" href="([^"]+)"/;
       if ($1) { $program = decode_utf8 `curl -s https://gist.github.com$1` } else { return 'gist not found' };
