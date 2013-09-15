@@ -206,7 +206,7 @@ Q:PIR {
         my $info = shift;
         my $message = $info->{body};
         my $address = $info->{address} // '';
-        return if $info->{who} =~ m/^dalek.?$/;
+        return if $info->{who} =~ m/^(dalek|preflex|yoleaux).?$/;
         $message =~ s/␤/\n/g;
 
         if ($message =~ m/^p6eval:/) {
