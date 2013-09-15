@@ -48,6 +48,7 @@ package Evalbot;
     use File::Temp qw(tempfile);
     use Carp qw(confess);
     use Scalar::Util qw(reftype);
+    use Encode qw(encode_utf8);
     use charnames qw(:full);
     my $prefix  = '';
     my $postfix = qr/:\s/;
@@ -276,11 +277,17 @@ Q:PIR {
         $response =~ s/\n/$newline/g;
         $response =~ s/\x00/$null/g;
 
-        my $format_len = bytes::length(sprintf $format_res, $prefix, '');
-        if (bytes::length($response) + $format_len > $max_output_len){
+        my $format_len = length(encode_utf8(sprintf $format_res, $prefix, ''));
+        if (length(encode_utf8($response)) + $format_len > $max_output_len){
+            my $cut_res = '';
             my $target = $max_output_len - 3 - $format_len;
-            $response = substr $response, 0, $target;
-            $response .= '…';
+            while ($response =~ /(\X)/g) {
+                my $grapheme_bytes = encode_utf8($1);
+                $target -= length($grapheme_bytes);
+                last if $target < 0;
+                $cut_res .= $grapheme_bytes;
+            }
+            $response = $cut_res.'…';
         }
         return sprintf $format_res, $prefix, $response;
     }
