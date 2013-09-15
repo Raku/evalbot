@@ -279,15 +279,17 @@ Q:PIR {
 
         my $format_len = length(encode_utf8(sprintf $format_res, $prefix, ''));
         if (length(encode_utf8($response)) + $format_len > $max_output_len){
-            my $cut_res = '';
             my $target = $max_output_len - 3 - $format_len;
-            while ($response =~ /(\X)/g) {
-                my $grapheme_bytes = encode_utf8($1);
-                $target -= length($grapheme_bytes);
-                last if $target < 0;
-                $cut_res .= $grapheme_bytes;
-            }
-            $response = $cut_res.'…';
+            $response =~ s/^.{0,$target}(?![^\x00-\x7F\xC0-\xFF])\K.*//s;
+            $response .= "…";
+#            my $cut_res = '';
+#            while ($response =~ /(\X)/g) {
+#                my $grapheme_bytes = encode_utf8($1);
+#                $target -= length($grapheme_bytes);
+#                last if $target < 0;
+#                $cut_res .= $grapheme_bytes;
+#            }
+#            $response = $cut_res.'…';
         }
         return sprintf $format_res, $prefix, $response;
     }
