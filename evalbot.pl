@@ -48,10 +48,12 @@ package Evalbot;
     use File::Temp qw(tempfile);
     use Carp qw(confess);
     use Scalar::Util qw(reftype);
+    use charnames qw(:full);
     my $prefix  = '';
     my $postfix = qr/:\s/;
 
     my $home = glob '~';
+    my $max_output_len = 290;
 
     my %aliases = (
         nom => 'rakudo',
@@ -190,6 +192,8 @@ Q:PIR {
     my $evalbot_version = get_revision();
 
     my $regex = $prefix . '(' . join('|',  keys(%impls), keys(%aliases)) . ")$postfix";
+    my $format_res = "%s: OUTPUT«%s»\n";
+    my $format_nores = "%s: ( no output )\n";
 
     sub help {
         return "Usage: <$regex \$perl6_program>";
@@ -223,8 +227,7 @@ Q:PIR {
                 }
                 my $result = '';
                 while (my ($text, $names) = each %results){
-                    $result .= join(', ', @$names);
-                    $result .= sprintf(": %s\n", $text);
+                    $result .= format_output(join(', ', @$names), $text);
                 }
                 return $result;
             }
@@ -238,7 +241,7 @@ Q:PIR {
             if (reftype($e) eq 'HASH' && $e->{revision}){
                 $revision = ' ' . $e->{revision}->();
             }
-            return sprintf "%s%s: %s", $eval_name, $revision, $result;
+            return format_output("$eval_name$revision", $result);
         } elsif ( $message =~ m/\Aevalbot\s*control\s+(\w+)/) {
             my $command = $1;
             if ($command eq 'restart'){
@@ -259,6 +262,27 @@ Q:PIR {
             }
         }
         return;
+    }
+
+    sub format_output {
+        my ($prefix, $response) = @_;
+
+        if (!length $response) {
+            return sprintf $format_nores, $response;
+        }
+
+        my $newline = '␤';
+        my $null    = "\N{SYMBOL FOR NULL}";
+        $response =~ s/\n/$newline/g;
+        $response =~ s/\x00/$null/g;
+
+        my $format_len = bytes::length(sprintf $format_res, $prefix, '');
+        if (bytes::length($response) + $format_len > $max_output_len){
+            my $target = $max_output_len - 3 - $format_len;
+            $response = substr $response, 0, $target;
+            $response .= '…';
+        }
+        return sprintf $format_res, $prefix, $response;
     }
 
     sub get_revision {
@@ -321,7 +345,7 @@ if ($config_file eq '-run') {
 	$revision = ' ' . $e->{revision}->();
     }
     binmode STDOUT, ':utf8';
-    printf "%s%s: %s\n", $eval_name, $revision, $result;
+    print Evalbot::format_output("$eval_name$revision", $result);
     exit 0;
 }
 

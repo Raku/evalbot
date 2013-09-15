@@ -94,24 +94,7 @@ sub run {
       	return 'file not found'
       };
     }
-    my $response = _fork_and_eval($program, $executer, $ename);
-    if (!length $response){
-        $response = ' ( no output )';
-    } else {
-        $response = "OUTPUT«$response»";
-    }
-    my $newline = '␤';
-    my $null    = "\N{SYMBOL FOR NULL}";
-    $response =~ s/\n/$newline/g;
-    $response =~ s/\x00/$null/g;
-    my $prefix_len = bytes::length($ename) + 2;
-    if ($executer->{revision}) { $prefix_len += (1 + bytes::length($executer->{revision}->())); }
-    if (bytes::length($response) + $prefix_len > $max_output_len){
-	my $target = $max_output_len - 3 - $prefix_len;
-        $response = substr $response, 0, $target;
-        $response .= '…';
-    }
-    return $response;
+    return _fork_and_eval($program, $executer, $ename);
 }
 
 sub _fork_and_eval {
