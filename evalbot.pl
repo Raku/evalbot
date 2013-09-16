@@ -269,7 +269,7 @@ Q:PIR {
         my ($prefix, $response) = @_;
 
         if (!length $response) {
-            return sprintf $format_nores, $response;
+            return sprintf $format_nores, $prefix;
         }
 
         my $newline = '␤';
