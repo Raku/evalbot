@@ -76,7 +76,7 @@ package Evalbot;
             },
             b => {
                 chdir       => "$home/rakudo/",
-                cmd_line    => 'PERL6LIB=lib ../p/bin/perl6 %program',
+                cmd_line    => 'PERL6LIB=lib install/bin/perl6 %program',
                 revision    => sub { get_revision_from_file('~/p/rakudo-revision')},
                 nolock      => 1,
                 filter      => \&filter_pct,
@@ -122,11 +122,15 @@ Q:PIR {
                 filter      => \&filter_pct,
             },
             'nqp-jvm'   => {
-                chdir       => "$home/nqp-jvm/",
-                cmd_line    => './jdk1.7.0/bin/java -cp .:bin:3rdparty/bcel/bcel-5.2.jar NQPJVM %program',
+                chdir       => $home,
+                cmd_line    => './rakudo-jvm/bin/nqp %program',
+            },
+            'rakudo-jvm' => {
+                chdir       => $home,
+                cmd_line    => './rakudo-jvm/bin/perl6 %program',
             },
             pugs => {
-                cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/Pugs.hs/Pugs/pugs %program",
+                cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/.cabal/bin/pugs %program",
             },
             std  => {
                 chdir       => "$home/std/snap",
