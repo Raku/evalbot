@@ -65,6 +65,10 @@ package Evalbot;
         perl6  => [qw/rakudo niecza/],
         rn  => [qw/rakudo niecza/ ],
         nr  => [qw/rakudo niecza/ ],
+        'nqp-mvm' => 'nqp-moarvm',
+        'nqp-m'   => 'nqp-moarvm',
+        'r-jvm'   => 'rakudo-jvm',
+        'r-j'     => 'rakudo-jvm',
     );
     $aliases{$_} = [qw/rakudo niecza pugs/] for qw/rnp rpn nrp npr prn pnr/;
 
@@ -125,6 +129,10 @@ Q:PIR {
                 chdir       => $home,
                 cmd_line    => './rakudo-jvm/bin/nqp %program',
             },
+            'nqp-moarvm' => {
+                chdir       => "$home/MoarVM/nqp-cc",
+                cmd_line    => '../moarvm nqp.moarvm %program',
+            }
             'rakudo-jvm' => {
                 chdir       => $home,
                 cmd_line    => './rakudo-jvm/bin/perl6 %program',
