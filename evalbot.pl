@@ -69,6 +69,7 @@ package Evalbot;
         'nqp-m'   => 'nqp-moarvm',
         'r-jvm'   => 'rakudo-jvm',
         'r-j'     => 'rakudo-jvm',
+        'rj'      => 'rakudo-jvm',
     );
     $aliases{$_} = [qw/rakudo niecza pugs/] for qw/rnp rpn nrp npr prn pnr/;
 
