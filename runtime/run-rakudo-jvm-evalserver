@@ -23,7 +23,7 @@ while (1) {
     next if $new_version eq $version;
 
     kill 9, $pid;
-    wait $pid;
+    wait;
     $pid = launch();
     $version = $new_version;
 }
