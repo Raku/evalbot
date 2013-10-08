@@ -135,7 +135,7 @@ Q:PIR {
             },
             'rakudo-jvm' => {
                 chdir       => $home,
-                cmd_line    => './rakudo-jvm/bin/perl6 %program',
+                cmd_line    => "$home/jvm-rakudo/eval-client.pl /home/p6eval_eval/p6eval-token run -e %program',
             },
             pugs => {
                 cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/.cabal/bin/pugs %program",
