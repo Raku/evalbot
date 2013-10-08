@@ -1,0 +1,47 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use File::Slurp qw/read_file/;
+
+my $h1 = '/home/p6eval';
+my $h2 = '/home/p6eval_eval';
+my $version_file = "$h1/rakudo-jvm/revision";
+
+chdir $h2;
+
+my $token = 'p6eval-token';
+
+my $pid = launch();
+my $version = read_file($version_file);
+
+$SIG{INT} = sub { kill -9, $pid };
+
+while (1) {
+    sleep 60;
+    my $new_version = read_file($version_file);
+    next if $new_version eq $version;
+
+    kill 9, $pid;
+    wait $pid;
+    $pid = launch();
+    $version = $new_version;
+}
+
+sub launch {
+    my $pid = fork;
+    if (!defined $pid) {
+        die "Cannot fork: $!";
+    }
+    elsif ($pid) {
+        # parent
+        sleep 5;
+        chmod 0666, $token;
+        return $pid;
+    }
+    else {
+        # child
+        exec "$h1/rakudo-jvm/bin/perl6-eval-server",  "-cookie", $token, "-app",
+            "$h1/rakudo-jvm/languages/perl6/runtime/perl6.jar";
+    }
+}
