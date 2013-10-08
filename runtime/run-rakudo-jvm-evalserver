@@ -41,6 +41,7 @@ sub launch {
     }
     else {
         # child
+        unlink $token;
         exec "$h1/rakudo-jvm/bin/perl6-eval-server",  "-cookie", $token, "-app",
             "$h1/rakudo-jvm/languages/perl6/runtime/perl6.jar";
     }
