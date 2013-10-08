@@ -178,6 +178,7 @@ sub _auto_execute {
     binmode $prog_fh, ':encoding(UTF-8)';
     print $prog_fh $program;
     close $prog_fh;
+    chmod 0644 $program_file_name;
 
     $cmd =~ s/\%program\b/$program_file_name/g;
     close $fh;
