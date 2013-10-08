@@ -102,6 +102,7 @@ sub _fork_and_eval {
 
 # the forked process should write its output to this tempfile:
     my ($fh, $filename) = tempfile();
+    chmod 0644, $filename;
 
     my $fork_val = fork;
     my $timed_out = 0;
