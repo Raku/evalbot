@@ -152,7 +152,7 @@ Q:PIR {
             },
             'p5-to-p6' => {
                 chdir       => "$home/Perlito",
-                cmd_line    => "perl perlito5.pl -I./src5/lib -Cperl6 %program",
+                cmd_line    => "perl perlito5.pl --noboilerplate -I./src5/lib -Cperl6 %program",
                 revision    => sub {
                     my $r = qx/cd $home && Perlito && git describe/;
                     chomp $r;
