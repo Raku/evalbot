@@ -71,6 +71,7 @@ package Evalbot;
         'r-j'     => 'rakudo-jvm',
         'rj'      => 'rakudo-jvm',
         'j'       => 'rakudo-jvm',
+        'p56'     => 'p5-to-p6',
     );
     $aliases{$_} = [qw/rakudo niecza pugs/] for qw/rnp rpn nrp npr prn pnr/;
 
@@ -148,6 +149,15 @@ Q:PIR {
                 cmd_line    => 'perl -I. tryfile %program',
                 revision    => sub { get_revision_from_file("$home/std/snap/revision")},
                 nolock      => 1,
+            },
+            'p5-to-p6' => {
+                chdir       => "$home/Perlito",
+                cmd_line    => "perl perlito5.pl -I./src5/lib -Cperl6 %program",
+                revision    => sub {
+                    my $r = qx/cd $home && Perlito && git describe/;
+                    chomp $r;
+                    return $r;
+                },
             },
     );
 
