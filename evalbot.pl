@@ -65,8 +65,11 @@ package Evalbot;
         perl6  => [qw/rakudo niecza/],
         rn  => [qw/rakudo niecza/ ],
         nr  => [qw/rakudo niecza/ ],
-        'nqp-mvm' => 'nqp-moarvm',
+        nqp => [qw/nqp-moarvm nqp-jvm nqp-parrot/],
+        'nqp-p'   => 'nqp-parrot',
+        'nqp-j'   => 'nqp-jvm',
         'nqp-m'   => 'nqp-moarvm',
+        'nqp-mvm' => 'nqp-moarvm',
         'r-jvm'   => 'rakudo-jvm',
         'r-j'     => 'rakudo-jvm',
         'rj'      => 'rakudo-jvm',
@@ -123,12 +126,12 @@ Q:PIR {
                 cmd_line    => './bin/perl6 --setting=RESTRICTED %program',
                 revision    => sub { get_revision_from_file("$home/star/version") },
             },
-            nqp   => {
+            'nqp-parrot' => {
                 chdir       => "$home",
                 cmd_line    => './nom-inst/bin/nqp %program',
                 filter      => \&filter_pct,
             },
-            'nqp-jvm'   => {
+            'nqp-jvm'    => {
                 chdir       => $home,
                 cmd_line    => './rakudo-jvm/bin/nqp %program',
             },
