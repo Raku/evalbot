@@ -128,12 +128,12 @@ Q:PIR {
             },
             'nqp-parrot' => {
                 chdir       => "$home",
-                cmd_line    => './nom-inst/bin/nqp %program',
+                cmd_line    => './rakudo-inst/bin/nqp-p %program',
                 filter      => \&filter_pct,
             },
             'nqp-jvm'    => {
                 chdir       => $home,
-                cmd_line    => './rakudo-jvm/bin/nqp %program',
+                cmd_line    => './rakudo-inst/bin/nqp-j %program',
             },
             'nqp-moarvm' => {
                 chdir       => "$home/nqp-moarvm/install/bin",
