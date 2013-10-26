@@ -18,7 +18,7 @@ my $version = read_file($version_file);
 $SIG{INT} = sub { kill -9, $pid };
 $SIG{HUP} = sub {
     kill -9, $pid;
-    exec $^X, $O, @ARGV;
+    exec $^X, $0, @ARGV;
     exit;
 };
 
