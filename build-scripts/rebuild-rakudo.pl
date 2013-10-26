@@ -9,19 +9,21 @@ use Data::Dumper;
 chdir glob '~';
 
 my $home = glob('~') . '/';
-my @dirs = qw(p1 p2);
+my @dirs = qw(rakudo-inst-1 rakudo-inst-2);
 my %swap = (@dirs, reverse(@dirs));
 
-my $link = 'p';
+my $link = 'rakudo-inst';
 
 my $now = readlink $link;
 my $other = $swap{$now};
 
 say "Other: '$other'";
-chdir "${home}rakudo";
+my $source_dir = $other;
+$source_dir =~ s/-inst-//;
+chdir $source_dir;
 system('git', 'pull');
 
-my $revision_file = "$home$other/rakudo-revision";
+my $revision_file = "$home$other/revision";
 eval {
     open my $fh, '<', $revision_file or break;
     my $r = <$fh>;
@@ -36,49 +38,13 @@ eval {
     }
 };
 
-my $revision = `cat build/PARROT_REVISION`;
-chomp $revision;
-say "Requiring revision $revision";
+system('git', 'clean', '-xdf');
+system($^X, 'Configure.pl', "--prefix=$home/$other",
+            '--backends=parrot,jvm', '--gen-nqp', '--gen-parrot') and die $?;
+system('make', 'install')                           and die $?;
 
-my $parrot_config = "$home$other/bin/parrot_config";
-my $available = `$parrot_config git_describe`;
-chomp $available;
-say "Revision $available available";
-if ($available ne $revision) {
-    chdir 'parrot';
-    system('git', 'clean', '-xdf');
-    system('git', 'fetch');
-    system('git', 'checkout', $revision)                  and die $?;
-    system($^X, 'Configure.pl', "--prefix=$home/$other",
-                '--nomanicheck', '--cc=ccache gcc')     and die $?;
-    system('make' )                              and die $?;
-    system('make', 'install')                           and die $?;
-    system('make', 'install-dev')                       and die $?;
-    chdir "${home}rakudo";
-}
-
-system($^X, 'Configure.pl', "--parrot-config=$parrot_config");
-system('make', 'Test.pir')      and die $?;
-system('make', 'install')       and die $?;
-system("git rev-parse HEAD | cut -b 1,2,3,4,5,6 > $revision_file") and warn $?;
-
-=for comment
-
-    eval {
-	chdir glob('~/blizkost/');
-    system('make', 'clean');        # may fail, nor warning here
-	system('git', 'pull')           and warn $?;
-	print "$^X 'Configure.pl --parrot-config=$home$other/bin/parrot_config";
-	
-	system($^X, 'Configure.pl', "--parrot-config=$home$other/bin/parrot_config")
-		and warn $?;
-	system('make') 			and warn $?;
-	system('make', 'install') 	and warn $?;
-};
-
-=cut
+system("git rev-parse HEAD | cut -b 1-6 > $revision_file") and warn $?;
 
 chdir $home;
 unlink $link;
 symlink $other, $link;
-
