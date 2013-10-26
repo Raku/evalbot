@@ -57,14 +57,18 @@ package Evalbot;
     my $max_output_len = 290;
 
     my %aliases = (
-        nom => 'rakudo',
-        r   => 'rakudo',
+        nom     => ['rakudo-parrot', 'rakudo-jvm'],
+        rakudo  => ['rakudo-parrot', 'rakudo-jvm'],
+        r       => ['rakudo-parrot', 'rakudo-jvm'],
+        p       => 'rakudo-parrot',
+        rp      => 'rakudo-parrot',
+        'r-p'   => 'rakudo-parrot',
+        'P'     => 'pugs',
         n   => 'niecza',
-        p   => 'pugs',
-        p6  => [qw/rakudo niecza/],
-        perl6  => [qw/rakudo niecza/],
-        rn  => [qw/rakudo niecza/ ],
-        nr  => [qw/rakudo niecza/ ],
+        p6  => [qw/rakudo-parrot rakudo-jvm niecza/],
+        perl6  => [qw/rakudo-parrot rakudo-jvm niecza/],
+        rn  => [qw/rakudo-parrot rakudo-jvm niecza/ ],
+        nr  => [qw/rakudo-parrot rakudo-jvm niecza/ ],
         nqp => [qw/nqp-moarvm nqp-jvm nqp-parrot/],
         'nqp-p'   => 'nqp-parrot',
         'nqp-j'   => 'nqp-jvm',
@@ -76,7 +80,7 @@ package Evalbot;
         'j'       => 'rakudo-jvm',
         'p56'     => 'p5-to-p6',
     );
-    $aliases{$_} = [qw/rakudo niecza pugs/] for qw/rnp rpn nrp npr prn pnr/;
+    $aliases{$_} = [qw/rakudo-parrot rakudo-jvm niecza pugs/] for qw/rnP rPn nrP nPr Prn Pnr/;
 
     our %impls = (
             niecza => {
@@ -115,7 +119,7 @@ Q:PIR {
 # EVALBOT ARTIFACT
 >,
             },
-            rakudo => {
+            'rakudo-parrot' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-inst/bin/perl6-p --setting=RESTRICTED %program',
                 nolock      => 1,
