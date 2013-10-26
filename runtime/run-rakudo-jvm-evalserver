@@ -6,7 +6,7 @@ use File::Slurp qw/read_file/;
 
 my $h1 = '/home/p6eval';
 my $h2 = '/home/p6eval_eval';
-my $version_file = "$h1/rakudo-jvm/revision";
+my $version_file = "$h1/rakudo-inst/revision";
 
 chdir $h2;
 
@@ -16,6 +16,11 @@ my $pid = launch();
 my $version = read_file($version_file);
 
 $SIG{INT} = sub { kill -9, $pid };
+$SIG{HUP} = sub {
+    kill -9, $pid;
+    exec $^X, $O, @ARGV;
+    exit;
+};
 
 while (1) {
     sleep 60;
@@ -42,7 +47,7 @@ sub launch {
     else {
         # child
         unlink $token;
-        exec "$h1/rakudo-jvm/bin/perl6-eval-server",  "-cookie", $token, "-app",
-            "$h1/rakudo-jvm/languages/perl6/runtime/perl6.jar";
+        exec "$h1/rakudo-inst/bin/perl6-eval-server",  "-cookie", $token, "-app",
+            "$h1/rakudo-inst/languages/perl6/runtime/perl6.jar";
     }
 }
