@@ -117,9 +117,9 @@ Q:PIR {
             },
             rakudo => {
                 chdir       => "$home",
-                cmd_line    => './nom-inst/bin/perl6 --setting=RESTRICTED %program',
+                cmd_line    => './rakudo-inst/bin/perl6-p --setting=RESTRICTED %program',
                 nolock      => 1,
-                revision    => sub { get_revision_from_file('~/nom-inst/rakudo-revision')},
+                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
             },
             star => {
                 chdir       => "$home/star/",
