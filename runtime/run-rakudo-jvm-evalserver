@@ -15,9 +15,9 @@ my $token = 'p6eval-token';
 my $pid = launch();
 my $version = read_file($version_file);
 
-$SIG{INT} = sub { kill -9, $pid };
+$SIG{INT} = sub { kill 9, $pid };
 $SIG{HUP} = sub {
-    kill -9, $pid;
+    kill 9, $pid;
     exec $^X, $0, @ARGV;
     exit;
 };
