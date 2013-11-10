@@ -146,7 +146,7 @@ Q:PIR {
             'rakudo-jvm' => {
                 chdir       => $home,
                 cmd_line    => "$^X $home/jvm-rakudo/eval-client.pl /home/p6eval_eval/p6eval-token run  %program",
-                revision    => sub { get_revision_from_file("$home/rakudo-jvm/revision")},
+                revision    => sub { get_revision_from_file("$home/rakudo-inst/revision")},
             },
             pugs => {
                 cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/.cabal/bin/pugs %program",

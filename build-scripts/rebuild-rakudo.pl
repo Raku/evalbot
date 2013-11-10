@@ -6,6 +6,7 @@ use 5.010;
 use autodie;
 use Data::Dumper;
 
+say scalar localtime();
 chdir glob '~';
 
 my $home = glob('~') . '/';
