@@ -230,6 +230,11 @@ Q:PIR {
             } elsif ($command eq 'version'){
                 return "This is evalbot revision $evalbot_version";
             }
+            elsif ($command eq 'pull') {
+                return system('git', 'pull', '--quiet')
+                    ? '(failed)'
+                    : '(success)';
+            }
         } elsif ($message =~ m/\Aevalbot\s*rebuild\s+([a-zA-Z0-9_]+)$/) {
             my $name = "$1";
             # XXX We want better integration so that this can go to the right place
