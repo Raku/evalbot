@@ -57,16 +57,19 @@ package Evalbot;
     my $max_output_len = 290;
 
     my %aliases = (
-        nom     => ['rakudo-parrot', 'rakudo-jvm'],
-        rakudo  => ['rakudo-parrot', 'rakudo-jvm'],
-        r       => ['rakudo-parrot', 'rakudo-jvm'],
+        nom     => ['rakudo-parrot', 'rakudo-jvm', 'rakudo-moar'],
+        rakudo  => ['rakudo-parrot', 'rakudo-jvm', 'rakudo-moar'],
+        r       => ['rakudo-parrot', 'rakudo-jvm', 'rakudo-moar'],
         p       => 'rakudo-parrot',
         rp      => 'rakudo-parrot',
         'r-p'   => 'rakudo-parrot',
+        'r-m'   => 'rakudo-moar',
+        'rm'    => 'rakudo-moar',
+        m       => 'rakudo-moar',
         'P'     => 'pugs',
         n   => 'niecza',
-        p6  => [qw/rakudo-parrot rakudo-jvm niecza/],
-        perl6  => [qw/rakudo-parrot rakudo-jvm niecza/],
+        p6  => [qw/rakudo-parrot rakudo-jvm raudo-moar niecza/],
+        perl6  => [qw/rakudo-parrot rakudo-jvm raudo-moar niecza/],
         rn  => [qw/rakudo-parrot rakudo-jvm niecza/ ],
         nr  => [qw/rakudo-parrot rakudo-jvm niecza/ ],
         nqp => [qw/nqp-moarvm nqp-jvm nqp-parrot/],
@@ -122,6 +125,12 @@ Q:PIR {
             'rakudo-parrot' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-inst/bin/perl6-p --setting=RESTRICTED %program',
+                nolock      => 1,
+                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
+            },
+            'rakudo-moar' => {
+                chdir       => "$home",
+                cmd_line    => './rakudo-inst/bin/perl6-m --setting=RESTRICTED %program',
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
             },
