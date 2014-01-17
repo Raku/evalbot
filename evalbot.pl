@@ -149,7 +149,7 @@ Q:PIR {
                 cmd_line    => './rakudo-inst/bin/nqp-j %program',
             },
             'nqp-moarvm' => {
-                chdir       => $home
+                chdir       => $home,
                 cmd_line    => './rakudo-inst/bin/nqp-m %program',
             },
             'rakudo-jvm' => {
