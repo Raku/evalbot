@@ -207,6 +207,7 @@ Q:PIR {
                 for my $eval_name (@{ $aliases{$eval_name} }) {
                     my $e = $impls{$eval_name};
                     my $tmp_res = EvalbotExecuter::run($str, $e, $eval_name);
+                    $tmp_res =~ s|/tmp/\w{10}|/tmp/tmpfile|g;
                     my $revision = '';
                     if (reftype($e) eq 'HASH' && $e->{revision}){
                         $revision = ' ' . $e->{revision}->();
