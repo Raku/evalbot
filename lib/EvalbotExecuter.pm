@@ -136,9 +136,8 @@ sub _fork_and_eval {
         $result = "(signal " . (split ' ', $Config{sig_name})[$?] . ")" . $result;
     }
     if (reftype($executer) eq 'HASH' && $executer->{filter}){
-        $result = $executer->{filter}->($result);
+        return $executer->{filter}->($result);
     }
-    $result =~ s/\Q$filename\E/<program>/g;
     return $result;
 }
 
