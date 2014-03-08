@@ -83,7 +83,7 @@ sub run {
     my ($program, $executer, $ename) = @_;
     if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/\p{HexDigit}+$/) {
       my $page = `curl -s $program`;
-      $page =~ /<a\b[^>]+?\btitle="View Raw"\b[^>]+?\bhref="([^"]+)"/;
+      $page =~ /<a\b[^>]+?\btitle="View Raw"[^>]+?\bhref="([^"]+)"/;
       if ($1) { $program = decode_utf8 `curl -s $1` } else { return 'gist not found' };
     } elsif ($program =~ /^https:\/\/github\.com\/([^\/]+\/[^\/]+)\/blob\/([^\/]+\/[^\/].*)$/) {
       my ($project, $file) = ($1, $2);
