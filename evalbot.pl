@@ -201,7 +201,7 @@ Q:PIR {
         }
         my @combined;
         foreach my $r (sort keys %by_rev) {
-            foreach $p (sort keys %{$by_rev{$r}}) {
+            foreach my $p (sort keys %{$by_rev{$r}}) {
                 my $s = $by_rev{$r}{$p};
                 $s = @$s > 1
                     ? '{' . join(',', @$s) . '}'
