@@ -188,6 +188,30 @@ Q:PIR {
     }
 #    warn "Regex: ", $regex, "\n";
 
+    sub format_names {
+        my ($names) = @_;
+        # Goal: rakudo-{jvm,moar} abcde, rakudo-parrot xyzzy, foo-other
+        my %by_rev;
+        foreach (@$names) {
+            my ($name, $rev) = @$_;
+            my ($prefix, $suffix) = ($name, '');
+            $name =~ /^(.+?-)(.+)$/
+                and ($prefix, $suffix) = ($1, $2);
+            push @{$by_rev{$rev}{$prefix}}, $suffix;
+        }
+        my @combined;
+        foreach my $r (sort keys %by_rev) {
+            foreach $p (sort keys %{$by_rev{$r}}) {
+                my $s = $by_rev{$r}{$p};
+                $s = @$s > 1
+                    ? '{' . join(',', @$s) . '}'
+                    : $s->[0];
+                push @combined, $p . $s . ($r ? " $r" : '');
+            }
+        }
+        return join(', ', @combined);
+    }
+
     sub said {
         my $self = shift;
         my $info = shift;
@@ -210,13 +234,13 @@ Q:PIR {
                     $tmp_res =~ s|/tmp/\w{10}|/tmp/tmpfile|g;
                     my $revision = '';
                     if (reftype($e) eq 'HASH' && $e->{revision}){
-                        $revision = ' ' . $e->{revision}->();
+                        $revision = $e->{revision}->();
                     }
-                    push @{$results{$tmp_res}}, "$eval_name$revision";
+                    push @{$results{$tmp_res}}, [$eval_name, $revision];
                 }
                 my $result = '';
                 while (my ($text, $names) = each %results){
-                    $result .= format_output(join(', ', @$names), $text);
+                    $result .= format_output(format_names($names), $text);
                 }
                 return $result;
             }
