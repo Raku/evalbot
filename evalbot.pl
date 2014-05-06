@@ -82,6 +82,9 @@ package Evalbot;
         'rj'      => 'rakudo-jvm',
         'j'       => 'rakudo-jvm',
         'p56'     => 'p5-to-p6',
+        star      => ['star-m', 'star-p'],
+        sm        => 'star-m',
+        sp        => 'star-p',
     );
     $aliases{$_} = [qw/rakudo-parrot rakudo-jvm niecza pugs/] for qw/rnP rPn nrP nPr Prn Pnr/;
 
@@ -134,9 +137,19 @@ Q:PIR {
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
             },
-            star => {
+            'star-m' => {
                 chdir       => "$home/star/",
-                cmd_line    => './bin/perl6 --setting=RESTRICTED %program',
+                cmd_line    => './bin/perl6-m --setting=RESTRICTED %program',
+                revision    => sub { get_revision_from_file("$home/star/version") },
+            },
+            'star-p' => {
+                chdir       => "$home/star/",
+                cmd_line    => './bin/perl6-p --setting=RESTRICTED %program',
+                revision    => sub { get_revision_from_file("$home/star/version") },
+            },
+            'star-j' => {
+                chdir       => "$home/star/",
+                cmd_line    => './bin/perl6-j --setting=RESTRICTED %program',
                 revision    => sub { get_revision_from_file("$home/star/version") },
             },
             'nqp-parrot' => {
