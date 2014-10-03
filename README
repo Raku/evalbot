@@ -1,5 +1,6 @@
 This is an IRC bot, which is designed to execute Perl 6 commands from IRC, and
 echo the output on IRC again.
+Currently it runs as nick "camelia" on freenode, in #perl6 and other channels.
 
 Might also work for other languages :-)
 
