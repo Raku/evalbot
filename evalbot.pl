@@ -233,7 +233,7 @@ Q:PIR {
         return if $info->{who} =~ m/^(dalek|preflex|yoleaux).?$/;
         $message =~ s/␤/\n/g;
 
-        if ($message =~ m/^p6eval:/) {
+        if ($message =~ m/^camelia:/) {
             return "Usage: " . join(',', sort keys %impls) . ': $code';
         } elsif ($message =~ m/\A$regex\s*(.*)\z/s){
             my ($eval_name, $str) = ($1, $2);
