@@ -57,9 +57,9 @@ package Evalbot;
     my $max_output_len = 290;
 
     my %aliases = (
-        nom     => ['rakudo-parrot', 'rakudo-jvm', 'rakudo-moar'],
-        rakudo  => ['rakudo-parrot', 'rakudo-jvm', 'rakudo-moar'],
-        r       => ['rakudo-parrot', 'rakudo-jvm', 'rakudo-moar'],
+        nom     => ['rakudo-parrot', 'rakudo-moar'],
+        rakudo  => ['rakudo-parrot', 'rakudo-moar'],
+        r       => ['rakudo-parrot', 'rakudo-moar'],
         p       => 'rakudo-parrot',
         rp      => 'rakudo-parrot',
         'r-p'   => 'rakudo-parrot',
@@ -68,10 +68,10 @@ package Evalbot;
         m       => 'rakudo-moar',
         'P'     => 'pugs',
         n   => 'niecza',
-        p6  => [qw/rakudo-parrot rakudo-jvm rakudo-moar niecza/],
-        perl6  => [qw/rakudo-parrot rakudo-jvm rakudo-moar niecza/],
-        rn  => [qw/rakudo-parrot rakudo-jvm rakudo-moar niecza/ ],
-        nr  => [qw/rakudo-parrot rakudo-jvm rakudo-moar niecza/ ],
+        p6  => [qw/rakudo-parrot rakudo-moar/],
+        perl6  => [qw/rakudo-parrot rakudo-moar/],
+        rn  => [qw/rakudo-parrot rakudo-moar niecza/ ],
+        nr  => [qw/rakudo-parrot rakudo-moar niecza/ ],
         nqp => [qw/nqp-moarvm nqp-jvm nqp-parrot/],
         'nqp-p'   => 'nqp-parrot',
         'nqp-j'   => 'nqp-jvm',
