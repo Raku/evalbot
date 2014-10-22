@@ -155,11 +155,14 @@ sub _auto_execute {
     open STDERR, ">&", $fh;
     # TODO: avoid hardcoded path
     open STDIN, "<", glob '~/evalbot/stdin';
+
+=for comment disabled for now, causes problems that need to be debugged
     my $lock;
     if (!$executer->{nolock} && !($lock = try_lock($lock_name)) ) {
         print "Rebuild in progress\n";
         exit 1;
     }
+=cut
     if ($executer->{chdir}){
         chdir $executer->{chdir}
             or confess "Can't chdir to '$executer->{chdir}': $!";
