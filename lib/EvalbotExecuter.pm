@@ -143,7 +143,7 @@ sub _fork_and_eval {
 
 sub try_lock {
     my $name = shift;
-    my $lockfile = "/home/p6eval/evalbot/build-scripts/lock.$name";
+    my $lockfile = (glob '~') . "/evalbot/build-scripts/lock.$name";
     open my $lock, '>', $lockfile or return;
     flock($lock, 6) && $lock;
 }
