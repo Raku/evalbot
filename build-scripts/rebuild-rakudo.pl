@@ -5,7 +5,6 @@ use File::Path qw(rmtree);
 use 5.010;
 use autodie;
 use Data::Dumper;
-use File::Remove (remove);
 
 say scalar localtime();
 chdir glob '~';
@@ -41,7 +40,7 @@ eval {
 };
 warn $@ if $@;
 
-remove \1, glob "$home/$other/*";
+rmtree glob "$home/$other/*";
 system('git', 'clean', '-xdf');
 system($^X, 'Configure.pl', "--prefix=$home/$other",
             '--backends=parrot,jvm,moar', '--gen-nqp', '--gen-parrot', '--gen-moar') and die $?;
