@@ -38,6 +38,7 @@ eval {
         exit;
     }
 };
+warn $@ if $@;
 
 system('git', 'clean', '-xdf');
 system($^X, 'Configure.pl', "--prefix=$home/$other",
