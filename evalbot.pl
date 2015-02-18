@@ -38,6 +38,7 @@ use Data::Dumper;
 use FindBin;
 use lib 'lib';
 use EvalbotExecuter;
+use IRC::FromANSI::Tiny;
 use utf8;
 
 # $ENV{LD_LIBRARY_PATH} = '/usr/local/lib/';
@@ -306,6 +307,7 @@ Q:PIR {
         my $null    = "\N{SYMBOL FOR NULL}";
         $response =~ s/\n/$newline/g;
         $response =~ s/\x00/$null/g;
+        $response = IRC::FromANSI::Tiny::convert($response);
 
         my $format_len = length(encode_utf8(sprintf $format_res, $prefix, ''));
         if (length(encode_utf8($response)) + $format_len > $max_output_len){
