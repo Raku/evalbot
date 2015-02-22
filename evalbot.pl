@@ -95,37 +95,6 @@ package Evalbot;
                 cmd_line    => 'PATH=/usr/local/mono-2.10.1/bin:/usr/local/bin:/usr/bin:/bin LD_LIBRARY_PATH=/usr/local/mono-2.10.1/lib mono ./run/Niecza.exe --safe --obj-dir=obj %program',
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
-            b => {
-                chdir       => "$home/rakudo/",
-                cmd_line    => 'PERL6LIB=lib install/bin/perl6 %program',
-                revision    => sub { get_revision_from_file('~/p/rakudo-revision')},
-                nolock      => 1,
-                filter      => \&filter_pct,
-# Rakudo loops infinitely when first using Safe.pm, and then declaring
-# another class. So don't do that, rather inline the contents of Safe.pm.
-                program_prefix => q<
-module Safe { our sub forbidden(*@a, *%h) { die "Operation not permitted in safe mode" };
-    Q:PIR {
-        $P0 = get_hll_namespace
-        $P1 = get_hll_global ['Safe'], '&forbidden'
-        $P0['!qx']  = $P1
-        null $P1
-        set_hll_global ['IO'], 'Socket', $P1
-    }; };
-Q:PIR {
-    .local pmc s
-    s = get_hll_global ['Safe'], '&forbidden'
-    $P0 = getinterp
-    $P0 = $P0['outer';'lexpad';1]
-    $P0['&run'] = s
-    $P0['&open'] = s
-    $P0['&slurp'] = s
-    $P0['&unlink'] = s
-    $P0['&dir'] = s
-};
-# EVALBOT ARTIFACT
->,
-            },
             'rakudo-parrot' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-inst/bin/perl6-p --setting=RESTRICTED %program',
