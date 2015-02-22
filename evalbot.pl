@@ -75,6 +75,7 @@ package Evalbot;
         'nqp-j'   => 'nqp-jvm',
         'nqp-m'   => 'nqp-moarvm',
         'nqp-mvm' => 'nqp-moarvm',
+        'nqp-q'   => 'nqp-js',
         'r-jvm'   => 'rakudo-jvm',
         'r-j'     => 'rakudo-jvm',
         'rj'      => 'rakudo-jvm',
@@ -138,6 +139,10 @@ package Evalbot;
             'nqp-moarvm' => {
                 chdir       => $home,
                 cmd_line    => './rakudo-inst/bin/nqp-m %program',
+            },
+            'nqp-js'     => {
+                chdir       => "$home/nqp-js",
+                cmd_line    => './nqp-js %program',
             },
             'rakudo-jvm' => {
                 chdir       => $home,
