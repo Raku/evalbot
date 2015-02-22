@@ -314,24 +314,6 @@ package Evalbot;
         return $str;
     }
 
-    sub filter_kp6 {
-        my $str = shift;
-        $str =~ s/KindaPerl6::Runtime.*//ms;
-        return $str;
-    }
-
-    sub filter_std {
-        my $str = shift;
-        if($str =~ /PARSE FAILED/) {
-            my @lines = grep {!/-+>/ && !/PARSE FAILED/} split /\n/, $str;
-            return join '', @lines;
-        } elsif($str =~ /Out of memory!/) {
-            return 'Out of memory!';
-        } else {
-            return "parse OK";
-        }
-    }
-
     sub connected {
         my $bot = shift;
         $bot->say(who=>'nickserv',channel=>'msg',body=>"identify $bot->{__nickpass}") if exists $bot->{__nickpass};
