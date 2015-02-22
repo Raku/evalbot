@@ -58,21 +58,18 @@ package Evalbot;
     my $max_output_len = 290;
 
     my %aliases = (
-        nom     => ['rakudo-parrot', 'rakudo-moar'],
-        rakudo  => ['rakudo-parrot', 'rakudo-moar'],
-        r       => ['rakudo-parrot', 'rakudo-moar'],
-        p       => 'rakudo-parrot',
-        rp      => 'rakudo-parrot',
-        'r-p'   => 'rakudo-parrot',
+        nom     => ['rakudo-moar'],
+        rakudo  => ['rakudo-moar'],
+        r       => ['rakudo-moar'],
         'r-m'   => 'rakudo-moar',
         'rm'    => 'rakudo-moar',
         m       => 'rakudo-moar',
         'P'     => 'pugs',
         n   => 'niecza',
-        p6  => [qw/rakudo-parrot rakudo-moar/],
-        perl6  => [qw/rakudo-parrot rakudo-moar/],
-        rn  => [qw/rakudo-parrot rakudo-moar niecza/ ],
-        nr  => [qw/rakudo-parrot rakudo-moar niecza/ ],
+        p6  => [qw/rakudo-moar/],
+        perl6  => [qw/rakudo-moar/],
+        rn  => [qw/rakudo-moar niecza/ ],
+        nr  => [qw/rakudo-moar niecza/ ],
         nqp => [qw/nqp-moarvm nqp-jvm nqp-parrot/],
         'nqp-p'   => 'nqp-parrot',
         'nqp-j'   => 'nqp-jvm',
@@ -87,7 +84,7 @@ package Evalbot;
         sm        => 'star-m',
         sp        => 'star-p',
     );
-    $aliases{$_} = [qw/rakudo-parrot rakudo-jvm niecza pugs/] for qw/rnP rPn nrP nPr Prn Pnr/;
+    $aliases{$_} = [qw/rakudo-jvm niecza pugs/] for qw/rnP rPn nrP nPr Prn Pnr/;
 
     our %impls = (
             niecza => {
@@ -95,18 +92,18 @@ package Evalbot;
                 cmd_line    => 'PATH=/usr/local/mono-2.10.1/bin:/usr/local/bin:/usr/bin:/bin LD_LIBRARY_PATH=/usr/local/mono-2.10.1/lib mono ./run/Niecza.exe --safe --obj-dir=obj %program',
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
-            'rakudo-parrot' => {
-                chdir       => "$home",
-                cmd_line    => './rakudo-inst/bin/perl6-p --setting=RESTRICTED %program',
-                nolock      => 1,
-                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
-            },
             'rakudo-moar' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-inst/bin/perl6-m --setting=RESTRICTED %program',
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
             },
+            'prof-m' => {
+                chdir       => "$home",
+                cmd_line    => './rakudo-inst/bin/perl6-m --profile --profile-file=/tmp/mprof.html --setting=RESTRICTED %program',
+                nolock      => 1,
+                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
+            }
             'star-m' => {
                 chdir       => "$home/star/",
                 cmd_line    => './bin/perl6-m --setting=RESTRICTED %program',
@@ -158,6 +155,9 @@ package Evalbot;
                     return $r;
                 },
             },
+            'debug-cat' => {
+                cmd_line => 'cat %program',
+            }
     );
 
     my $evalbot_version = get_revision();
