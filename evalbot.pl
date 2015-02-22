@@ -100,10 +100,17 @@ package Evalbot;
             },
             'prof-m' => {
                 chdir       => "$home",
-                cmd_line    => './rakudo-inst/bin/perl6-m --profile --profile-file=/tmp/mprof.html --setting=RESTRICTED %program',
+                cmd_line    => './rakudo-inst/bin/perl6-m --profile --profile-filename=/tmp/mprof.html --setting=RESTRICTED %program',
                 nolock      => 1,
                 revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
-            }
+                post        => sub {
+                    my ($output) = @_;
+                    my $destfile = sprintf "%x", time - 1420066800; # seconds since 2015-01-01
+                    print "\nnow running scp...\n";
+                    system("scp", '-q', '/tmp/mprof.html', "p.p6c.org\@www.p6c.org:public/$destfile.html");
+                    return ('Prof' => "http://p.p6c.org/$destfile");
+                },
+            },
             'star-m' => {
                 chdir       => "$home/star/",
                 cmd_line    => './bin/perl6-m --setting=RESTRICTED %program',
@@ -237,7 +244,14 @@ package Evalbot;
             if (reftype($e) eq 'HASH' && $e->{revision}){
                 $revision = ' ' . $e->{revision}->();
             }
-            return format_output("$eval_name$revision", $result);
+            my $out = format_output("$eval_name$revision", $result);
+            if ($e->{post}) {
+                my %extra = $e->{post}->($out);
+                for my $k (sort keys %extra) {
+                    $out .= " $k: $extra{$k}\n";
+                }
+            }
+            return $out;
         } elsif ( $message =~ m/\Aevalbot\s*control\s+(\w+)/) {
             my $command = $1;
             if ($command eq 'restart'){
