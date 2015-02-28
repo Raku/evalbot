@@ -36,7 +36,7 @@ use Config::File;
 use Carp qw(confess);
 use Data::Dumper;
 use FindBin;
-use Cwd;
+use Cwd qw(getcwd);
 use lib 'lib';
 use EvalbotExecuter;
 use IRC::FromANSI::Tiny;
