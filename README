@@ -15,3 +15,20 @@ To add a new execution target, conduct the following steps:
  * pull on the server
  * restart evalbot
  * PROFIT
+
+The Rakudo Star releases aren't automatically built. To update to a new
+release, conduct the following steps:
+
+* log in as the user that runs the evalbot
+* download the rakudo-star-YYYY.MM.tar.gz tarball
+* unpack, build install:
+
+    tar xzf rakudo-star-YYYY.MM.tar.gz
+    cd rakudo-star-YYYY-MM
+    perl Configure.pl --backends=all --gen-moar && make && make install
+    echo YYYY.MM > install/version
+    cd ..
+
+* symlink to star:
+
+    rm star; ln -s rakudo-star-YYYY.MM/install
