@@ -36,6 +36,7 @@ use Config::File;
 use Carp qw(confess);
 use Data::Dumper;
 use FindBin;
+use Cwd;
 use lib 'lib';
 use EvalbotExecuter;
 use IRC::FromANSI::Tiny;
@@ -356,6 +357,10 @@ if ($config_file eq '-run') {
     binmode STDOUT, ':utf8';
     print Evalbot::format_output("$eval_name$revision", $result);
     exit 0;
+}
+
+unless (-e $config_file) {
+	confess("The given config file, $config_file, wasn't found in {getcwd}.");
 }
 
 my %conf = %{ Config::File::read_config_file($config_file) };
