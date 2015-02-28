@@ -360,7 +360,7 @@ if ($config_file eq '-run') {
 }
 
 unless (-e $config_file) {
-	confess("The given config file, $config_file, wasn't found in {getcwd}.");
+	confess("The given config file, $config_file, wasn't found in " . getcwd . ".");
 }
 
 my %conf = %{ Config::File::read_config_file($config_file) };
