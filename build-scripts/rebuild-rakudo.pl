@@ -6,6 +6,7 @@ use 5.010;
 use autodie;
 use Data::Dumper;
 
+my $force = shift(@ARGV) // 0;
 say scalar localtime();
 chdir glob '~';
 
@@ -33,7 +34,7 @@ eval {
     chomp $r;
     my $needs_rebuild = `git rev-parse HEAD | grep ^$r|wc -l`;
     chomp $needs_rebuild;
-    if ($needs_rebuild) {
+    if (!$force && $needs_rebuild) {
         say "Don't need to rebuild, we are on the newest revision anyway";
         exit;
     }
