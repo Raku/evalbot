@@ -43,7 +43,7 @@ warn $@ if $@;
 rmtree glob "$home/$other/*";
 system('git', 'clean', '-xdf');
 system($^X, 'Configure.pl', "--prefix=$home/$other",
-            '--backends=moar', '--gen-nqp', '--gen-moar') and die $?;
+            '--backends=moar,jvm', '--gen-nqp', '--gen-moar') and die $?;
 system('make', 'install')                           and die $?;
 
 system("git rev-parse HEAD | cut -b 1-6 > $revision_file") and warn $?;
