@@ -4,14 +4,15 @@ use warnings;
 
 use File::Slurp qw/read_file/;
 
-my $h1 = '/home/p6eval';
-my $h2 = '/home/p6eval_eval';
-my $version_file = "$h1/rakudo-inst/revision";
+my $user = shift(@ARGV) || $ENV{USER} || 'camelia';
+my $home = glob "~$user";
+my $version_file = "$home/rakudo-inst/revision";
 
-chdir $h2;
 
 my $token = 'p6eval-token';
 
+my $last_launch   = time;
+my $restart_every = 4 * 3600;
 my $pid = launch();
 my $version = read_file($version_file);
 
@@ -25,7 +26,7 @@ $SIG{HUP} = sub {
 while (1) {
     sleep 60;
     my $new_version = read_file($version_file);
-    next if $new_version eq $version;
+    next if $new_version eq $version && (time - $last_launch) >= $restart_every;
 
     kill 9, $pid;
     wait;
@@ -35,6 +36,7 @@ while (1) {
 
 sub launch {
     my $pid = fork;
+    $last_launch = time;
     if (!defined $pid) {
         die "Cannot fork: $!";
     }
@@ -47,7 +49,7 @@ sub launch {
     else {
         # child
         unlink $token;
-        exec "$h1/rakudo-inst/bin/perl6-eval-server",  "-cookie", $token, "-app",
-            "$h1/rakudo-inst/share/perl6/runtime/perl6.jar";
+        exec "$home/rakudo-inst/bin/perl6-eval-server",  "-cookie", $token, "-app",
+            "$home/rakudo-inst/share/perl6/runtime/perl6.jar";
     }
 }
