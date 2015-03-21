@@ -48,6 +48,6 @@ sub launch {
         # child
         unlink $token;
         exec "$h1/rakudo-inst/bin/perl6-eval-server",  "-cookie", $token, "-app",
-            "$h1/rakudo-inst/languages/perl6/runtime/perl6.jar";
+            "$h1/rakudo-inst/share/perl6/runtime/perl6.jar";
     }
 }
