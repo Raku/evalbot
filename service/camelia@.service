@@ -1,0 +1,21 @@
+[Unit]
+Description=Perl 6 eval bot camelia
+
+[Service]
+Type=simple
+User=camelia
+Environment=PERL5LIB=/home/camelia/perl5/lib/perl5/:/home/camelia/perl5/lib/perl5/x86_64-linux/
+ExecStart=/bin/bash /home/camelia/evalbot/run.sh %i.conf
+KillSignal=SIGKILL
+WorkingDirectory=/home/camelia/evalbot
+Restart=always
+# can't have PrivateTmp, because communication with the JVM evalbot server
+# goes through temp files :(
+# PrivateTmp=yes
+#PrivateDevices=yes
+# ProtectSystem=full
+NoNewPrivileges=yes
+# LimitNPROC=30
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=JVM eval server for camelia
+
+[Service]
+Type=simple
+User=camelia
+Environment=PERL5LIB=/home/camelia/perl5/lib/perl5/:/home/camelia/perl5/lib/perl5/x86_64-linux/
+ExecStart=/bin/bash /home/camelia/bin/perlbrewed-perl /home/camelia/evalbot/runtime/run-rakudo-jvm-evalserver
+KillSignal=SIGKILL
+WorkingDirectory=/home/camelia/
+Restart=always
+#PrivateTmp=yes
+#PrivateDevices=yes
+#ProtectSystem=full
+#NoNewPrivileges=yes
+#MemoryLimit=4G
+#LimitNPROC=10
+
+[Install]
+WantedBy=multi-user.target
