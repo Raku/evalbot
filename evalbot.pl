@@ -81,10 +81,9 @@ package Evalbot;
         'rj'      => 'rakudo-jvm',
         'j'       => 'rakudo-jvm',
         'p56'     => 'p5-to-p6',
-        star      => ['star-m', 'star-j'],
+        star      => 'star-m',
         sj        => 'star-j',
         sm        => 'star-m',
-        sp        => 'star-p',
     );
     $aliases{$_} = [qw/rakudo-jvm niecza pugs/] for qw/rnP rPn nrP nPr Prn Pnr/;
 
@@ -116,11 +115,6 @@ package Evalbot;
             'star-m' => {
                 chdir       => "$home/star/",
                 cmd_line    => './bin/perl6-m --setting=RESTRICTED %program',
-                revision    => sub { get_revision_from_file("$home/star/version") },
-            },
-            'star-p' => {
-                chdir       => "$home/star/",
-                cmd_line    => './bin/perl6-p --setting=RESTRICTED %program',
                 revision    => sub { get_revision_from_file("$home/star/version") },
             },
             'star-j' => {
