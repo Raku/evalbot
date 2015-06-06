@@ -76,15 +76,20 @@ use Encode qw(encode);
 use charnames qw(:full);
 use POSIX ();
 use Encode qw/decode_utf8/;
+use JSON qw/decode_json/;
 
 my $max_output_len = 290;
 
 sub run {
     my ($program, $executer, $ename) = @_;
-    if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/\p{HexDigit}+$/) {
-      my $page = `curl -s $program`;
-      $page =~ /<a\b[^>]+?\baria-label="View Raw"[^>]+?\bhref="([^"]+)"/;
-      if ($1) { $program = decode_utf8 `curl -s https://gist.githubusercontent.com$1` } else { return 'gist not found' };
+    if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/(\p{HexDigit}+)$/) {
+      my $page = `curl -s https://api.github.com/gists/$1`;
+      my $json = decode_json $page;
+      if ($json->{message} && $json->{message} eq 'Not Found') {
+          return 'gist not found';
+      } else {
+          $program = (values %{$json->{files}})[0]{content};
+      }
     } elsif ($program =~ /^https:\/\/github\.com\/([^\/]+\/[^\/]+)\/blob\/([^\/]+\/[^\/].*)$/) {
       my ($project, $file) = ($1, $2);
       my $page = `curl -s $program`;
