@@ -52,7 +52,7 @@ package Evalbot;
     use Encode qw(encode_utf8);
     use charnames qw(:full);
     my $prefix  = '';
-    my $postfix = qr/:\s/;
+    my $postfix = qr/:\s(?!OUTPUT)/;
 
     my $home = glob '~';
     my $max_output_len = 290;
