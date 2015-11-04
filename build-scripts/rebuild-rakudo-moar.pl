@@ -27,7 +27,7 @@ if (not -d $dirs[0] or not -d $dirs[1]) {
 }
 
 my $now = readlink $link;
-my $other = $swap{$now};
+my $other = $swap{$now} // $dir[0];
 
 say "Other: '$other'";
 my $source_dir = $other;
