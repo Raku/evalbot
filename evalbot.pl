@@ -95,9 +95,9 @@ package Evalbot;
             },
             'rakudo-moar' => {
                 chdir       => "$home",
-                cmd_line    => './rakudo-inst/bin/perl6-m --setting=RESTRICTED %program',
+                cmd_line    => './rakudo-m-inst/bin/perl6-m --setting=RESTRICTED %program',
                 nolock      => 1,
-                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
+                revision    => sub { get_revision_from_file('~/rakudo-m-inst/revision')},
             },
             'prof-m' => {
                 chdir       => "$home",
@@ -129,11 +129,11 @@ package Evalbot;
             },
             'nqp-jvm'    => {
                 chdir       => $home,
-                cmd_line    => './rakudo-inst/bin/nqp-j %program',
+                cmd_line    => './rakudo-j-inst/bin/nqp-j %program',
             },
             'nqp-moarvm' => {
                 chdir       => $home,
-                cmd_line    => './rakudo-inst/bin/nqp-m %program',
+                cmd_line    => './rakudo-m-inst/bin/nqp-m %program',
             },
             'nqp-js'     => {
                 chdir       => "$home/nqp-js",
@@ -141,8 +141,8 @@ package Evalbot;
             },
             'rakudo-jvm' => {
                 chdir       => $home,
-                cmd_line    => "$^X $home/rakudo-inst/bin/eval-client.pl $home/p6eval-token run_limited 15  %program",
-                revision    => sub { get_revision_from_file("$home/rakudo-inst/revision")},
+                cmd_line    => "$^X $home/rakudo-j-inst/bin/eval-client.pl $home/p6eval-token run_limited 15  %program",
+                revision    => sub { get_revision_from_file("$home/rakudo-j-inst/revision")},
             },
             pugs => {
                 cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/.cabal/bin/pugs %program",
