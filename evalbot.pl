@@ -64,6 +64,7 @@ package Evalbot;
         'r-m'   => 'rakudo-moar',
         'rm'    => 'rakudo-moar',
         m       => 'rakudo-moar',
+        M       => 'rakudo-MOAR',
         'P'     => 'pugs',
         n   => 'niecza',
         p6  => [qw/rakudo-moar/],
@@ -94,6 +95,12 @@ package Evalbot;
                 revision    => sub { get_revision_from_file('~/niecza/VERSION')},
             },
             'rakudo-moar' => {
+                chdir       => "$home",
+                cmd_line    => './rakudo-inst/bin/perl6-m --setting=RESTRICTED %program',
+                nolock      => 1,
+                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
+            },
+            'rakudo-MOAR' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-m-inst/bin/perl6-m --setting=RESTRICTED %program',
                 nolock      => 1,
