@@ -21,7 +21,7 @@ if (not -d $dirs[0] or not -d $dirs[1]) {
     for my $d (@dirs) {
         mkdir $d, 0777;
         (my $s = $d) =~ s/-inst//;
-        system 'git', 'clone', 'git@github.com:rakudo/rakudo', $s;
+        system 'git', 'clone', 'https://github.com:rakudo/rakudo', $s;
     }
     symlink $dirs[1], $link;
 }
