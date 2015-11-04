@@ -266,7 +266,7 @@ package Evalbot;
                     ? '(failed)'
                     : '(success)';
             }
-        } elsif ($message =~ m/\Aevalbot\s*rebuild\s+([a-zA-Z0-9_]+)$/) {
+        } elsif ($message =~ m/\Aevalbot\s*rebuild\s+([-a-zA-Z0-9_]+)$/) {
             my $name = "$1";
             # XXX We want better integration so that this can go to the right place
             if (EvalbotExecuter::try_lock($name)) {
