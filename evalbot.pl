@@ -246,7 +246,8 @@ package Evalbot;
             }
             my $e = $impls{$eval_name};
             warn "$info->{channel} <$info->{who}> $eval_name: $str\n";
-            my $result = EvalbotExecuter::run($str, $e, $eval_name);
+            my $result = eval { EvalbotExecuter::run($str, $e, $eval_name); };
+            $result //= $!;
             my $revision = '';
             if (reftype($e) eq 'HASH' && $e->{revision}){
                 $revision = ' ' . $e->{revision}->();
