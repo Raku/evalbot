@@ -13,13 +13,13 @@ perl -Ilib evalbot.pl <configfile>
 evalbot.pl is a perl5 based evalbot, intended for the different Perl 6
 implementations.
 
-Take a look at the example config file that is hopefully is the same 
+Take a look at the example config file that is hopefully is the same
 directory.
 
 =head1 AUTHOR
 
-Written by Moritz Lenz, many good contributions came from the #perl6 folks, 
-notably diakopter, Mitchell Charity (putter), Adrian Kreher (Auzon), rhr, 
+Written by Moritz Lenz, many good contributions came from the #perl6 folks,
+notably diakopter, Mitchell Charity (putter), Adrian Kreher (Auzon), rhr,
 Stefan O'Rear (sorear), and all those that I forgot.
 
 Copyright (C) 2007-2011 by Moritz Lenz and the pugs authors.
@@ -322,7 +322,7 @@ package Evalbot;
     sub get_revision_from_file {
         my $file = shift;
         my $len  = shift;
-        my $res = `cat $file`;
+        my $res = `cat \Q$file\E`;
         chomp $res;
         if (defined($len)) {
             return substr($res, 0, $len);
@@ -344,7 +344,7 @@ package Evalbot;
 
 package main;
 
-my $config_file = shift @ARGV 
+my $config_file = shift @ARGV
     or confess("Usage: $0 <config_file>\n   or: $0 -run <impl> <code>");
 
 if ($config_file eq '-run') {

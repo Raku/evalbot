@@ -83,7 +83,7 @@ my $max_output_len = 290;
 sub run {
     my ($program, $executer, $ename) = @_;
     if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/(\p{HexDigit}+)$/) {
-      my $page = `curl -s https://api.github.com/gists/$1`;
+      my $page = `curl -s https://api.github.com/gists/\Q$1\E`;
       my $json = decode_json $page;
       if ($json->{message} && $json->{message} eq 'Not Found') {
           return 'gist not found';
@@ -92,9 +92,10 @@ sub run {
       }
     } elsif ($program =~ /^https:\/\/github\.com\/([^\/]+\/[^\/]+)\/blob\/([^\/]+\/[^\/].*)$/) {
       my ($project, $file) = ($1, $2);
-      my $page = `curl -s $program`;
+      my $page = `curl -s \Q$program\E`;
       if ($page =~ /href="\/$project\/raw\/$file"/) {
-      	$program = decode_utf8 `curl -s https://raw.github.com/$project/$file`
+      	$program
+        = decode_utf8 `curl -s \Qhttps://raw.github.com/$project/$file\E`;
       } else {
       	return 'file not found'
       };

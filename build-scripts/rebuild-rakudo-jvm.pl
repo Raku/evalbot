@@ -42,7 +42,7 @@ eval {
     close $fh;
 
     chomp $r;
-    my $needs_rebuild = `git rev-parse HEAD | grep ^$r|wc -l`;
+    my $needs_rebuild = `git rev-parse HEAD | grep ^\Q$r\E|wc -l`;
     chomp $needs_rebuild;
     if (!$force && $needs_rebuild) {
         say "Don't need to rebuild, we are on the newest revision anyway";
