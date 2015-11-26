@@ -92,25 +92,25 @@ package Evalbot;
             niecza => {
                 chdir       => "$home/niecza",
                 cmd_line    => 'PATH=/usr/local/mono-2.10.1/bin:/usr/local/bin:/usr/bin:/bin LD_LIBRARY_PATH=/usr/local/mono-2.10.1/lib mono ./run/Niecza.exe --safe --obj-dir=obj %program',
-                revision    => sub { get_revision_from_file('~/niecza/VERSION')},
+                revision    => sub { get_revision_from_file("$home/niecza/VERSION")},
             },
             'rakudo-MOAR' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-inst/bin/perl6-m --setting=RESTRICTED %program',
                 nolock      => 1,
-                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
+                revision    => sub { get_revision_from_file("$home/rakudo-inst/revision")},
             },
             'rakudo-moar' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-m-inst/bin/perl6-m --setting=RESTRICTED %program',
                 nolock      => 1,
-                revision    => sub { get_revision_from_file('~/rakudo-m-inst/revision')},
+                revision    => sub { get_revision_from_file("$home/rakudo-m-inst/revision")},
             },
             'prof-m' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-inst/bin/perl6-m --profile --profile-filename=/tmp/mprof.html --setting=RESTRICTED %program',
                 nolock      => 1,
-                revision    => sub { get_revision_from_file('~/rakudo-inst/revision')},
+                revision    => sub { get_revision_from_file("$home/rakudo-inst/revision")},
                 post        => sub {
                     my ($output) = @_;
                     my $destfile = sprintf "%x", time - 1420066800; # seconds since 2015-01-01
