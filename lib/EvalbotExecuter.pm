@@ -108,6 +108,9 @@ sub run {
             my $raw_link = (values %{$json->{files}})[0]{links}->{self}->{href};
             $program = `curl -s \Q$raw_link\E`;
         }
+    } elsif ($program =~ /^https:\/\/gitlab\.com\/snippets\/(\d+)$/) {
+        $program = decode_utf8 `curl --fail -s https://gitlab.com/snippets/\Q$1\E/raw`;
+        return 'snippet not found' if $program eq '';
     }
     return _fork_and_eval($program, $executer, $ename);
 }
