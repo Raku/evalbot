@@ -354,7 +354,7 @@ if ($config_file eq '-run') {
     my $result = EvalbotExecuter::run($str, $e, $eval_name);
     my $revision = '';
     if (Scalar::Util::reftype($e) eq 'HASH' && $e->{revision}){
-	$revision = ' ' . $e->{revision}->();
+        $revision = ' ' . $e->{revision}->();
     }
     binmode STDOUT, ':utf8';
     print Evalbot::format_output("$eval_name$revision", $result);

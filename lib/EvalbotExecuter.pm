@@ -83,22 +83,22 @@ my $max_output_len = 290;
 sub run {
     my ($program, $executer, $ename) = @_;
     if ($program =~ /^https:\/\/gist\.github\.com\/[^\/]+?\/(\p{HexDigit}+)$/) {
-      my $page = `curl -s https://api.github.com/gists/\Q$1\E`;
-      my $json = decode_json $page;
-      if ($json->{message} && $json->{message} eq 'Not Found') {
-          return 'gist not found';
-      } else {
-          $program = (values %{$json->{files}})[0]{content};
-      }
+        my $page = `curl -s https://api.github.com/gists/\Q$1\E`;
+        my $json = decode_json $page;
+        if ($json->{message} && $json->{message} eq 'Not Found') {
+            return 'gist not found';
+        } else {
+            $program = (values %{$json->{files}})[0]{content};
+        }
     } elsif ($program =~ /^https:\/\/github\.com\/([^\/]+\/[^\/]+)\/blob\/([^\/]+\/[^\/].*)$/) {
-      my ($project, $file) = ($1, $2);
-      my $page = `curl -s \Q$program\E`;
-      if ($page =~ /href="\/$project\/raw\/$file"/) {
-      	$program
-        = decode_utf8 `curl -s \Qhttps://raw.github.com/$project/$file\E`;
-      } else {
-      	return 'file not found'
-      };
+        my ($project, $file) = ($1, $2);
+        my $page = `curl -s \Q$program\E`;
+        if ($page =~ /href="\/$project\/raw\/$file"/) {
+            $program
+            = decode_utf8 `curl -s \Qhttps://raw.github.com/$project/$file\E`;
+        } else {
+            return 'file not found'
+        }
     } elsif ($program =~ /^https:\/\/bitbucket.org\/snippets\/([^\/]+)\/([^\/]+)$/) {
         my $page = `curl -s https://bitbucket.org/!api/2.0/snippets/\Q$1\E/\Q$2\E`;
         my $json = decode_json $page;
@@ -129,7 +129,7 @@ sub _fork_and_eval {
         _auto_execute($executer, $program, $fh, $filename, $ename);
     } else {
 # server
-	alarm 22;
+        alarm 22;
         local $SIG{ALRM} = sub {
             $timed_out = 1;
             kill 15, -$fork_val;
@@ -146,7 +146,7 @@ sub _fork_and_eval {
     my $result = do { local $/; <$fh> };
     unlink $filename or warn "couldn't delete '$filename': $!";
     if ($timed_out) {
-	$result = "(timeout)" . $result;
+        $result = "(timeout)" . $result;
     } elsif ($? & 127) {
         $result = "(signal " . (split ' ', $Config{sig_name})[$?] . ")" . $result;
     }
