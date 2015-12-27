@@ -99,6 +99,15 @@ sub run {
       } else {
       	return 'file not found'
       };
+    } elsif ($program =~ /^https:\/\/bitbucket.org\/snippets\/([^\/]+)\/([^\/]+)$/) {
+        my $page = `curl -s https://bitbucket.org/!api/2.0/snippets/\Q$1\E/\Q$2\E`;
+        my $json = decode_json $page;
+        if ($json->{error}) {
+            return 'snippet not found';
+        } else {
+            my $raw_link = (values %{$json->{files}})[0]{links}->{self}->{href};
+            $program = `curl -s \Q$raw_link\E`;
+        }
     }
     return _fork_and_eval($program, $executer, $ename);
 }
