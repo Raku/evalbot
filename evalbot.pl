@@ -216,13 +216,13 @@ package Evalbot;
         my $address = $info->{address} // '';
         return if $info->{who} =~ m/^(dalek|preflex|yoleaux).?$/;
         $message =~ s/␤/\n/g;
-        $ENV{ME} = $info->{who};
 
         if ($message =~ m/^camelia:/) {
             return "Usage: " . join(',', sort keys %impls) . ': $code';
         } elsif ($message =~ m/\A$regex\s*(.*)\z/s){
             my ($eval_name, $str) = ($1, $2);
             return "Program empty" unless length $str;
+            $ENV{ME} = $info->{who};
             if (ref $aliases{$eval_name}) {
                 warn "$info->{channel} <$info->{who}> Perl6: $str\n";
                 my %results;
