@@ -216,6 +216,7 @@ package Evalbot;
         my $address = $info->{address} // '';
         return if $info->{who} =~ m/^(dalek|preflex|yoleaux).?$/;
         $message =~ s/␤/\n/g;
+        $ENV{ME} = $info->{who};
 
         if ($message =~ m/^camelia:/) {
             return "Usage: " . join(',', sort keys %impls) . ': $code';
