@@ -298,7 +298,7 @@ package Evalbot;
         my $null    = "\N{SYMBOL FOR NULL}";
         $response =~ s/\n/$newline/g;
         $response =~ s/\x00/$null/g;
-        $response =~ s|/tmp/\w{10}|/tmp/tmpfile|g;
+        $response =~ s|/tmp/evalbot-file-\w{10}|/tmp/tmpfile|g;
         $response = IRC::FromANSI::Tiny::convert($response);
 
         my $format_len = length(encode_utf8(sprintf $format_res, $prefix, ''));

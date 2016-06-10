@@ -119,7 +119,7 @@ sub _fork_and_eval {
     my ($program, $executer, $ename) = @_;
 
 # the forked process should write its output to this tempfile:
-    my ($fh, $filename) = tempfile();
+    my ($fh, $filename) = tempfile('evalbot-file-XXXXXXXXXX', TMPDIR => 1);
     chmod 0644, $filename;
 
     my $fork_val = fork;
@@ -195,7 +195,7 @@ sub _auto_execute {
         $program = $executer->{program_munger}->($program);
     }
     my $cmd = $executer->{cmd_line} or confess "No command line given\n";
-    my ($prog_fh, $program_file_name) = tempfile();
+    my ($prog_fh, $program_file_name) = tempfile('evalbot-file-XXXXXXXXXX', TMPDIR => 1);
     binmode $prog_fh, ':encoding(UTF-8)';
     print $prog_fh $program;
     close $prog_fh;
