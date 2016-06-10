@@ -229,7 +229,6 @@ package Evalbot;
                 for my $eval_name (@{ $aliases{$eval_name} }) {
                     my $e = $impls{$eval_name};
                     my $tmp_res = EvalbotExecuter::run($str, $e, $eval_name);
-                    $tmp_res =~ s|/tmp/\w{10}|/tmp/tmpfile|g;
                     my $revision = '';
                     if (reftype($e) eq 'HASH' && $e->{revision}){
                         $revision = $e->{revision}->();
@@ -299,6 +298,7 @@ package Evalbot;
         my $null    = "\N{SYMBOL FOR NULL}";
         $response =~ s/\n/$newline/g;
         $response =~ s/\x00/$null/g;
+        $response =~ s|/tmp/\w{10}|/tmp/tmpfile|g;
         $response = IRC::FromANSI::Tiny::convert($response);
 
         my $format_len = length(encode_utf8(sprintf $format_res, $prefix, ''));
