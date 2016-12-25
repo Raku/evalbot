@@ -22,9 +22,9 @@ Written by Moritz Lenz, many good contributions came from the #perl6 folks,
 notably diakopter, Mitchell Charity (putter), Adrian Kreher (Auzon), rhr,
 Stefan O'Rear (sorear), and all those that I forgot.
 
-Copyright (C) 2007-2011 by Moritz Lenz and the pugs authors.
+Copyright (C) 2007-2011 by Moritz Lenz and the Perl 6 contributorsauthors.
 
-This file may be distributed under the same terms as perl or pugs itself.
+This file may be distributed under the same terms as perl 6 itself.
 
 =cut
 
@@ -64,13 +64,8 @@ package Evalbot;
         'r-m'   => 'rakudo-moar',
         'rm'    => 'rakudo-moar',
         m       => 'rakudo-moar',
-        M       => 'rakudo-MOAR',
-        'P'     => 'pugs',
-        n   => 'niecza',
         p6  => [qw/rakudo-moar/],
         perl6  => [qw/rakudo-moar rakudo-jvm/],
-        rn  => [qw/rakudo-moar niecza/ ],
-        nr  => [qw/rakudo-moar niecza/ ],
         nqp => [qw/nqp-moarvm/],
         'nqp-m'   => 'nqp-moarvm',
         'nqp-mvm' => 'nqp-moarvm',
@@ -81,23 +76,10 @@ package Evalbot;
         'j'       => 'rakudo-jvm',
         'p56'     => 'p5-to-p6',
         star      => 'star-m',
-        sj        => 'star-j',
         sm        => 'star-m',
     );
-    $aliases{$_} = [qw/rakudo-jvm niecza pugs/] for qw/rnP rPn nrP nPr Prn Pnr/;
 
     our %impls = (
-            niecza => {
-                chdir       => "$home/niecza",
-                cmd_line    => 'PATH=/usr/local/mono-2.10.1/bin:/usr/local/bin:/usr/bin:/bin LD_LIBRARY_PATH=/usr/local/mono-2.10.1/lib mono ./run/Niecza.exe --safe --obj-dir=obj %program',
-                revision    => sub { get_revision_from_file("$home/niecza/VERSION")},
-            },
-            'rakudo-MOAR' => {
-                chdir       => "$home",
-                cmd_line    => './rakudo-inst/bin/perl6-m --setting=RESTRICTED %program',
-                nolock      => 1,
-                revision    => sub { get_revision_from_file("$home/rakudo-inst/revision")},
-            },
             'rakudo-moar' => {
                 chdir       => "$home",
                 cmd_line    => './rakudo-m-inst/bin/perl6-m --setting=RESTRICTED %program',
@@ -122,16 +104,6 @@ package Evalbot;
                 cmd_line    => './bin/perl6-m --setting=RESTRICTED %program',
                 revision    => sub { get_revision_from_file("$home/star/version") },
             },
-            'star-j' => {
-                chdir       => "$home/star/",
-                cmd_line    => './bin/perl6-j --setting=RESTRICTED %program',
-                revision    => sub { get_revision_from_file("$home/star/version") },
-            },
-            'nqp-parrot' => {
-                chdir       => "$home",
-                cmd_line    => './rakudo-inst/bin/nqp-p %program',
-                filter      => \&filter_pct,
-            },
             'nqp-jvm'    => {
                 chdir       => $home,
                 cmd_line    => './rakudo-j-inst/bin/nqp-j %program',
@@ -148,15 +120,6 @@ package Evalbot;
                 chdir       => $home,
                 cmd_line    => "$^X $home/rakudo-j-inst/bin/eval-client.pl $home/p6eval-token run_limited 15  %program",
                 revision    => sub { get_revision_from_file("$home/rakudo-j-inst/revision")},
-            },
-            pugs => {
-                cmd_line    => "PUGS_SAFEMODE=true LC_ALL=en_US.ISO-8859-1 $home/.cabal/bin/pugs %program",
-            },
-            std  => {
-                chdir       => "$home/std/snap",
-                cmd_line    => 'perl -I. tryfile %program',
-                revision    => sub { get_revision_from_file("$home/std/snap/revision")},
-                nolock      => 1,
             },
             'p5-to-p6' => {
                 chdir       => "$home/Perlito",
