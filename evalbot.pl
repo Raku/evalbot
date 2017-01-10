@@ -175,7 +175,7 @@ package Evalbot;
         my $info = shift;
         my $message = $info->{body};
         my $address = $info->{address} // '';
-        return if $info->{who} =~ m/^(dalek|preflex|yoleaux).?$/;
+        return if $info->{who} =~ m/^(dalek|preflex|yoleaux|Geth).?$/;
         $message =~ s/␤/\n/g;
 
         if ($message =~ m/^camelia:/) {
