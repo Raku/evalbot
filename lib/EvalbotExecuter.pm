@@ -151,7 +151,7 @@ sub _fork_and_eval {
     if ($timed_out) {
         $result = "(timeout)" . $result;
     } elsif ($? & 127) {
-        $result = "(signal " . (split ' ', $Config{sig_name})[$?] . ")" . $result;
+        $result = "(signal " . (split ' ', $Config{sig_name})[$? & 127] . ")" . $result;
     }
     if (reftype($executer) eq 'HASH' && $executer->{filter}){
         return $executer->{filter}->($result);
