@@ -138,7 +138,7 @@ package Evalbot;
     my $evalbot_version = get_revision();
 
     my $regex = $prefix . '(' . join('|',  keys(%impls), keys(%aliases)) . ")$postfix";
-    my $format_res = "%s: OUTPUT«%s»\n";
+    my $format_res = "%s: OUTPUT: «%s»\n";
     my $format_nores = "%s: ( no output )\n";
 
     sub help {
