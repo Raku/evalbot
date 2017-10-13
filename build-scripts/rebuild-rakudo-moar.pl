@@ -57,7 +57,7 @@ system($^X, 'Configure.pl', "--prefix=$home/$other",
             '--backends=moar', '--gen-nqp', '--gen-moar') and die $?;
 system('make', 'm-install')                           and die $?;
 
-system("git rev-parse HEAD | cut -b 1-6 > $revision_file") and warn $?;
+system("git rev-parse HEAD | cut -b 1-9 > $revision_file") and warn $?;
 
 chdir $home;
 unlink $link;
