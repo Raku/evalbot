@@ -58,7 +58,7 @@ package Evalbot;
     my $max_output_len = 290;
 
     my %aliases = (
-        nom     => ['rakudo-moar'],
+        master  => ['rakudo-moar'],
         rakudo  => ['rakudo-moar'],
         r       => ['rakudo-moar', 'rakudo-jvm'],
         'r-m'   => 'rakudo-moar',
