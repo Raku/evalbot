@@ -34,6 +34,7 @@ my $source_dir = $other;
 $source_dir =~ s/-inst//;
 chdir $source_dir;
 system('git', 'pull');
+system('git', 'submodule', 'update');
 
 my $revision_file = "$home$other/revision";
 eval {
